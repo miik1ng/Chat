@@ -5,8 +5,9 @@ import android.content.Context;
 
 import com.mik1ng.network.INetworkRequiredInfo;
 import com.mik1ng.network.bean.AuthBean;
-import com.mik1ng.network.utils.AuthUtil;
 import com.mik1ng.network.utils.DateUtil;
+import com.mik1ng.network.utils.SharePreferenceConfig;
+import com.mik1ng.network.utils.SharedPreferenceUtils;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
@@ -63,10 +64,9 @@ public class RequestInterceptor implements Interceptor {
         builder.addHeader("datetime",nowDateTime);
         builder.addHeader("Accept", "application/json");
         // token
-        AuthBean authBean = AuthUtil.getAuthBean(context);
-        if (authBean != null) {
-            builder.addHeader("Authorization", authBean.getToken_ba() +
-                    " " + authBean.getToken());
+        String token = SharedPreferenceUtils.getString(context, SharePreferenceConfig.SP_TOKEN);
+        if (token != null) {
+            builder.addHeader("token", token);
         }
         //返回
         return chain.proceed(builder.build());

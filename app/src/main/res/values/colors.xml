@@ -9,4 +9,9 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="theme">#FF579A</color>
+    <color name="black_333">#333333</color>
+    <color name="black_f8">#F8F8F8</color>
+    <color name="black_bbb">#BBBBBB</color>
+    <color name="blue_279">#2793FF</color>
+    <color name="blue_eef">#EEF7FF</color>
 </resources>

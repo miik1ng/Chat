@@ -13,7 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Chat"
         android:networkSecurityConfig="@xml/network_https_config"
-        tools:targetApi="31">
+        tools:targetApi="31"
+        tools:ignore="LockedOrientationActivity">
 
         <meta-data
             android:name="design_width_in_dp"
@@ -21,7 +22,7 @@
 
         <meta-data
             android:name="design_height_in_dp"
-            android:value="812"/>
+            android:value="667"/>
 
         <activity
             android:name=".ui.welcome.WelcomeActivity"
@@ -34,7 +35,16 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.chat.ChatActivity" />
+        <activity android:name=".ui.login.LoginActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".ui.login.RegisterActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.main.MainActivity"
+            android:screenOrientation="portrait" />
 
     </application>
 

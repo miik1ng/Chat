@@ -5,4 +5,21 @@
     <string name="navigation_message">消息</string>
     <string name="navigation_friends">朋友</string>
     <string name="navigation_mine">我</string>
+    <!--toast-->
+    <string name="toast_11_phone">请输入11位手机号</string>
+    <string name="toast_password">请输入密码</string>
+    <string name="toast_password_no_same">密码不一致，重新输入</string>
+    <!--activity_login-->
+    <string name="login_title">聊天工具</string>
+    <string name="login_content">登录发现更多精彩</string>
+    <string name="login_hint_username">请输入登录账号</string>
+    <string name="login_hint_password">请输入登录密码</string>
+    <string name="login_phone_input_limit">1234567890</string>
+    <string name="login_login">登录</string>
+    <string name="login_register">注册</string>
+    <!--activity_register-->
+    <string name="register_content">新用户注册</string>
+    <string name="register_hint_username">请设置登录账号</string>
+    <string name="register_hint_passwrod">请设置登录密码</string>
+    <string name="register_hint_passwrod_again">请确认登录密码</string>
 </resources>
