@@ -1,0 +1,7 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <!--navigation导航栏字体大小 默认 点击后 text和icon间距-->
+    <dimen name="design_bottom_navigation_text_size">12sp</dimen>
+    <dimen name="design_bottom_navigation_active_text_size">13sp</dimen>
+    <dimen name="share_txt_size">13sp</dimen>
+</resources>
