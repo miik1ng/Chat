@@ -8,10 +8,13 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="theme">#FF579A</color>
+    <color name="theme">#2793FF</color>
     <color name="black_333">#333333</color>
     <color name="black_f8">#F8F8F8</color>
     <color name="black_bbb">#BBBBBB</color>
     <color name="blue_279">#2793FF</color>
     <color name="blue_eef">#EEF7FF</color>
+    <color name="black_aaa">#AAAAAA</color>
+    <color name="black_999">#999999</color>
+    <color name="black_eee">#EEEEEE</color>
 </resources>

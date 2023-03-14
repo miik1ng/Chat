@@ -1,17 +1,93 @@
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/white"
+    android:paddingHorizontal="15dp"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:ignore="MissingConstraints">
+    android:layout_height="match_parent">
 
     <TextView
-        android:text="message"
+        android:id="@+id/tv_title"
+        android:text="@string/login_title"
+        android:textSize="18sp"
+        android:textColor="@color/black_333"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/title_margin_top"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        android:layout_height="wrap_content"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <ImageView
+        android:id="@+id/iv_add"
+        android:src="@mipmap/icon_add"
+        android:background="@drawable/shape_rectangle_f8f_100"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/tv_title"
+        android:padding="7dp"
+        android:layout_marginTop="30dp"
+        android:layout_width="35dp"
+        android:layout_height="35dp"/>
+
+    <LinearLayout
+        android:id="@+id/layout_search"
+        android:orientation="horizontal"
+        android:background="@drawable/shape_rectangle_f8f_100"
+        android:gravity="center_vertical"
+        android:layout_toStartOf="@+id/iv_add"
+        android:layout_below="@+id/tv_title"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="10dp"
+        android:paddingHorizontal="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="35dp">
+
+        <ImageView
+            android:src="@mipmap/icon_search"
+            android:layout_width="15dp"
+            android:layout_height="15dp" />
+
+        <EditText
+            android:layout_weight="1"
+            android:hint="@string/message_search_hint"
+            android:textColorHint="@color/black_aaa"
+            android:textColor="@color/black_333"
+            android:textSize="14sp"
+            android:maxLines="1"
+            android:background="@null"
+            android:paddingHorizontal="10dp"
+            android:enabled="false"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_no_data"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_below="@+id/layout_search"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:src="@mipmap/bg_no_data"
+            android:layout_width="177dp"
+            android:layout_height="153dp" />
+
+        <TextView
+            android:text="@string/message_no_data"
+            android:textSize="15sp"
+            android:textColor="@color/black_333"
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/list_chat_record"
+        android:scrollbars="none"
+        android:layout_below="@+id/layout_search"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</RelativeLayout>

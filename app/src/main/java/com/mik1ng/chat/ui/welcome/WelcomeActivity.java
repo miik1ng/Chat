@@ -6,6 +6,7 @@ import com.mik1ng.chat.base.BaseActivity;
 import com.mik1ng.chat.databinding.ActivityWelcomeBinding;
 import com.mik1ng.chat.ui.chat.ChatActivity;
 import com.mik1ng.chat.ui.login.LoginActivity;
+import com.mik1ng.chat.ui.main.MainActivity;
 import com.mik1ng.chat.util.Constant;
 import com.mik1ng.chat.util.DeviceUtils;
 import com.mik1ng.chat.util.SharedPreferenceUtils;
@@ -19,7 +20,7 @@ public class WelcomeActivity extends BaseActivity<ActivityWelcomeBinding> {
     @Override
     public void initView() {
         if (!SharedPreferenceUtils.getBoolean(this, Constant.SP_LOGIN)) {
-            startActivity(new Intent(this, LoginActivity.class));
+            startActivity(new Intent(this, MainActivity.class));
             finish();
         }
     }
