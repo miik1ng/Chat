@@ -114,7 +114,7 @@ public class RequestInterceptor implements Interceptor {
                 String result = jsonObject.toString();
 
 
-                // 计算长度，todo 带有话
+                // 计算长度
                 for(int i = 0; i < result.length(); i++) {
                     int ascii = Character.codePointAt(result, i);
                     if(ascii >= 0 && ascii <=255)

@@ -1,16 +1,28 @@
 package com.mik1ng.chat.entity;
 
 public class MessageBean {
+    private String id;
     private String avatar;
     private String name;
     private String date;
     private String content;
+    private int count;
 
-    public MessageBean(String avatar, String name, String date, String content) {
+    public MessageBean(String id, String avatar, String name, String date, String content, int count) {
+        this.id = id;
         this.avatar = avatar;
         this.name = name;
         this.date = date;
         this.content = content;
+        this.count = count;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getAvatar() {
@@ -43,5 +55,13 @@ public class MessageBean {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
     }
 }

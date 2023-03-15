@@ -6,11 +6,31 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <androidx.constraintlayout.utils.widget.ImageFilterView
-        android:id="@+id/iv_avatar"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        app:roundPercent="1"/>
+    <RelativeLayout
+        android:layout_width="47dp"
+        android:layout_height="47dp">
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/iv_avatar"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            app:roundPercent="1"/>
+
+        <TextView
+            android:id="@+id/tv_count"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:background="@drawable/shape_round_red"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="11sp"
+            android:visibility="gone"/>
+
+    </RelativeLayout>
 
     <LinearLayout
         android:orientation="vertical"
