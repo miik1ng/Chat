@@ -16,7 +16,8 @@
             android:layout_alignParentBottom="true"
             android:layout_width="45dp"
             android:layout_height="45dp"
-            app:roundPercent="1"/>
+            android:scaleType="matrix"
+            app:roundPercent="1" />
 
         <TextView
             android:id="@+id/tv_count"

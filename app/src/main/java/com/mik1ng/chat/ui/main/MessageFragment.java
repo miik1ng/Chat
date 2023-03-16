@@ -1,5 +1,6 @@
 package com.mik1ng.chat.ui.main;
 
+import android.os.Bundle;
 import android.view.View;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -8,6 +9,7 @@ import com.mik1ng.chat.adapter.MessageAdapter;
 import com.mik1ng.chat.base.BaseFragment;
 import com.mik1ng.chat.databinding.FragmentMessageBinding;
 import com.mik1ng.chat.entity.MessageBean;
+import com.mik1ng.chat.event.OpenChatFragmentEvent;
 import com.mik1ng.chat.event.RefreshMessageCountEvent;
 import com.mik1ng.chat.interfaces.Observe;
 import com.mik1ng.chat.interfaces.OnItemClickListener;
@@ -60,11 +62,9 @@ public class MessageFragment extends BaseFragment<FragmentMessageBinding> {
     View.OnClickListener addListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            list.add(0, new MessageBean("" + add, "", "新添加" + add, "上午11:58", "新添加" + add, 1));
+            list.add(0, new MessageBean("" + add, "https://scpic.chinaz.net/files/pic/pic9/201607/fpic5835.jpg", "新添加" + add, "上午11:58", "新添加" + add, 1));
             adapter.notifyItemInserted(0);
-            adapter.notifyItemRangeChanged(1, list.size());
             count.set(count.get() + 1);
-
             add++;
         }
     };
@@ -79,13 +79,12 @@ public class MessageFragment extends BaseFragment<FragmentMessageBinding> {
             int id = random.nextInt(list.size());
             for (int i = 0; i < list.size(); i++) {
                 if (list.get(i).getId().equals(String.valueOf(id))) {
+                    //todo 当i=0时，则不更新位置变换，只将消息加1
                     list.get(i).setCount(list.get(i).getCount() + 1);
                     count.set(count.get() + 1);
                     adapter.notifyItemChanged(i, Constant.ADAPTER_PAYLOADS_0);
                     list.add(0, list.remove(i));
-
                     adapter.notifyItemMoved(i, 0);
-                    adapter.notifyItemRangeChanged(0, list.size());
                 }
             }
         }
@@ -104,8 +103,9 @@ public class MessageFragment extends BaseFragment<FragmentMessageBinding> {
                 list.get(position).setCount(0);
                 adapter.notifyItemChanged(position, Constant.ADAPTER_PAYLOADS_0);
             }
-            //todo 跳转到聊天页面
-            ToastUtils.showToast(getContext(), "" + list.get(position).getName());
+            Bundle bundle = new Bundle();
+            bundle.putString("name", list.get(position).getName());
+            EventBus.getDefault().post(new OpenChatFragmentEvent(bundle));
         }
     };
 
@@ -146,12 +146,12 @@ public class MessageFragment extends BaseFragment<FragmentMessageBinding> {
     };
 
     private void getData() {
-        list.add(new MessageBean("0","", "A随风奔跑的蒲公英", "上午11:58", "好的，暂时就这样",2));
-        list.add(new MessageBean("1","", "A开花的仙人掌", "上午09:23", "明天上午九点见",1));
-        list.add(new MessageBean("2","", "A东西南北", "上午07:51", "没得问题，具体的问题再详细讨论",2));
-        list.add(new MessageBean("3","", "A室友", "昨天", "今天中午吃啥饭？面条还是米饭？",0));
-        list.add(new MessageBean("4","", "B张大蓝", "昨天", "临时通知，明天上午10点的高数课改时间啊啊啊啊啊啊啊啊啊啊啊",0));
-        list.add(new MessageBean("5","", "B学姐王时宜", "昨天", "去年好像是7月2日，今年具体得等通知了",0));
+        list.add(new MessageBean("0","https://scpic.chinaz.net/files/pic/pic9/201910/zzpic20534.jpg", "A随风奔跑的蒲公英", "上午11:58", "好的，暂时就这样",2));
+        list.add(new MessageBean("1","https://scpic.chinaz.net/files/pic/pic9/201903/zzpic16869.jpg", "A开花的仙人掌", "上午09:23", "明天上午九点见",1));
+        list.add(new MessageBean("2","https://scpic.chinaz.net/files/pic/pic9/201901/zzpic16133.jpg", "A东西南北", "上午07:51", "没得问题，具体的问题再详细讨论",2));
+        list.add(new MessageBean("3","https://scpic.chinaz.net/files/pic/pic9/201608/fpic6657.jpg", "A室友", "昨天", "今天中午吃啥饭？面条还是米饭？",0));
+        list.add(new MessageBean("4","https://scpic.chinaz.net/files/pic/pic9/202008/bpic20969.jpg", "B张大蓝", "昨天", "临时通知，明天上午10点的高数课改时间啊啊啊啊啊啊啊啊啊啊啊",0));
+        list.add(new MessageBean("5","https://scpic.chinaz.net/files/pic/pic7/xpic944.jpg", "B学姐王时宜", "昨天", "去年好像是7月2日，今年具体得等通知了",0));
 
         for (MessageBean bean : list.get()) {
             count.set(count.get() + bean.getCount());

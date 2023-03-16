@@ -1,5 +1,6 @@
 package com.mik1ng.chat.ui.main;
 
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -7,6 +8,8 @@ import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.NavGraph;
 import androidx.navigation.NavGraphNavigator;
@@ -19,8 +22,11 @@ import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.mik1ng.chat.R;
 import com.mik1ng.chat.base.BaseActivity;
 import com.mik1ng.chat.databinding.ActivityMainBinding;
+import com.mik1ng.chat.event.CloseChatFragmentEvent;
+import com.mik1ng.chat.event.OpenChatFragmentEvent;
 import com.mik1ng.chat.event.RefreshFriendsCountEvent;
 import com.mik1ng.chat.event.RefreshMessageCountEvent;
+import com.mik1ng.chat.ui.chat.ChatFragment;
 import com.mik1ng.chat.ui.main.FriendsFragment;
 import com.mik1ng.chat.ui.main.MessageFragment;
 import com.mik1ng.chat.ui.main.MineFragment;
@@ -32,6 +38,7 @@ import org.greenrobot.eventbus.ThreadMode;
 public class MainActivity extends BaseActivity<ActivityMainBinding> {
 
     private NavController navController;
+    private FragmentManager fragmentManager;
 
     @Override
     public ActivityMainBinding getViewBind() {
@@ -47,6 +54,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
             return true;
         });
         initMessageTab();
+        fragmentManager = getSupportFragmentManager();
     }
 
     @Override
@@ -138,5 +146,22 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
         } else {
             tvFriendsCount.setVisibility(View.GONE);
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void openChatFragment(OpenChatFragmentEvent event) {
+        Bundle bundle = event.getBundle();
+        viewBind.fragment.setVisibility(View.VISIBLE);
+        fragmentManager.beginTransaction()
+                .addToBackStack(null)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .replace(R.id.fragment, ChatFragment.class, bundle)
+                .commit();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void closeChatFragment(CloseChatFragmentEvent event) {
+        fragmentManager.popBackStack();
+        viewBind.fragment.setVisibility(View.GONE);
     }
 }

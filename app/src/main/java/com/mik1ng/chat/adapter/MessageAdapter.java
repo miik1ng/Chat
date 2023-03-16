@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.mik1ng.chat.R;
 import com.mik1ng.chat.databinding.ItemMessageBinding;
 import com.mik1ng.chat.entity.MessageBean;
@@ -22,9 +23,11 @@ public class MessageAdapter extends RecyclerView.Adapter<ViewHolder<ItemMessageB
 
     private LayoutInflater layoutInflater;
     private List<MessageBean> list;
+    private Context context;
 
     public MessageAdapter(Context context, List<MessageBean> list) {
         layoutInflater = LayoutInflater.from(context);
+        this.context = context;
         if (list == null) {
             this.list = new ArrayList<>();
         } else {
@@ -40,7 +43,11 @@ public class MessageAdapter extends RecyclerView.Adapter<ViewHolder<ItemMessageB
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder<ItemMessageBinding> holder, int position) {
-        holder.bind.ivAvatar.setImageResource(R.mipmap.icon_app);
+
+        Glide.with(context)
+                .load(list.get(position).getAvatar())
+                .into(holder.bind.ivAvatar);
+
         holder.bind.tvName.setText(list.get(position).getName());
         holder.bind.tvDate.setText(list.get(position).getDate());
         holder.bind.tvContent.setText(list.get(position).getContent());
@@ -53,7 +60,7 @@ public class MessageAdapter extends RecyclerView.Adapter<ViewHolder<ItemMessageB
         }
         holder.bind.getRoot().setOnClickListener(view -> {
             if (onItemClickListener != null) {
-                onItemClickListener.onClick(position);
+                onItemClickListener.onClick(holder.getLayoutPosition());
             }
         });
 
