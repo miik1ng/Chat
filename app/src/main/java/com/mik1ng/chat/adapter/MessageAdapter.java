@@ -9,9 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.mik1ng.chat.R;
 import com.mik1ng.chat.databinding.ItemMessageBinding;
-import com.mik1ng.chat.entity.MessageBean;
+import com.mik1ng.chat.entity.MessageEntity;
 import com.mik1ng.chat.interfaces.OnItemClickListener;
 import com.mik1ng.chat.interfaces.OnItemLongClickListener;
 import com.mik1ng.chat.util.Constant;
@@ -22,10 +21,10 @@ import java.util.List;
 public class MessageAdapter extends RecyclerView.Adapter<ViewHolder<ItemMessageBinding>> {
 
     private LayoutInflater layoutInflater;
-    private List<MessageBean> list;
+    private List<MessageEntity> list;
     private Context context;
 
-    public MessageAdapter(Context context, List<MessageBean> list) {
+    public MessageAdapter(Context context, List<MessageEntity> list) {
         layoutInflater = LayoutInflater.from(context);
         this.context = context;
         if (list == null) {

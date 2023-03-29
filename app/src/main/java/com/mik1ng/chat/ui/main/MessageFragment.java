@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.mik1ng.chat.adapter.MessageAdapter;
 import com.mik1ng.chat.base.BaseFragment;
 import com.mik1ng.chat.databinding.FragmentMessageBinding;
-import com.mik1ng.chat.entity.MessageBean;
+import com.mik1ng.chat.entity.MessageEntity;
 import com.mik1ng.chat.event.OpenChatFragmentEvent;
 import com.mik1ng.chat.event.RefreshMessageCountEvent;
 import com.mik1ng.chat.interfaces.Observe;
@@ -17,7 +17,6 @@ import com.mik1ng.chat.interfaces.OnItemLongClickListener;
 import com.mik1ng.chat.observable.ArrayListObservable;
 import com.mik1ng.chat.observable.IntegerObservable;
 import com.mik1ng.chat.util.Constant;
-import com.mik1ng.chat.util.ToastUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -26,7 +25,7 @@ import java.util.Random;
 
 public class MessageFragment extends BaseFragment<FragmentMessageBinding> {
 
-    private ArrayListObservable<MessageBean> list = new ArrayListObservable<>();
+    private ArrayListObservable<MessageEntity> list = new ArrayListObservable<>();
     private MessageAdapter adapter;
 
     private IntegerObservable count = new IntegerObservable(0);
@@ -62,7 +61,7 @@ public class MessageFragment extends BaseFragment<FragmentMessageBinding> {
     View.OnClickListener addListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            list.add(0, new MessageBean("" + add, "https://scpic.chinaz.net/files/pic/pic9/201607/fpic5835.jpg", "新添加" + add, "上午11:58", "新添加" + add, 1));
+            list.add(0, new MessageEntity("" + add, "https://scpic.chinaz.net/files/pic/pic9/201607/fpic5835.jpg", "新添加" + add, "上午11:58", "新添加" + add, 1));
             adapter.notifyItemInserted(0);
             count.set(count.get() + 1);
             add++;
@@ -104,7 +103,7 @@ public class MessageFragment extends BaseFragment<FragmentMessageBinding> {
                 adapter.notifyItemChanged(position, Constant.ADAPTER_PAYLOADS_0);
             }
             Bundle bundle = new Bundle();
-            bundle.putString("name", list.get(position).getName());
+            bundle.putString(Constant.BUNDLE_NAME, list.get(position).getName());
             EventBus.getDefault().post(new OpenChatFragmentEvent(bundle));
         }
     };
@@ -132,10 +131,10 @@ public class MessageFragment extends BaseFragment<FragmentMessageBinding> {
     /**
      * 监听list变量
      */
-    Observe<ArrayList<MessageBean>> listObserve = new Observe<ArrayList<MessageBean>>() {
+    Observe<ArrayList<MessageEntity>> listObserve = new Observe<ArrayList<MessageEntity>>() {
         @Override
-        public void update(ArrayList<MessageBean> messageBeans) {
-            if (messageBeans.size() > 0) {
+        public void update(ArrayList<MessageEntity> messageEntities) {
+            if (messageEntities.size() > 0) {
                 viewBind.layoutNoData.setVisibility(View.GONE);
                 viewBind.listChatRecord.setVisibility(View.VISIBLE);
             } else {
@@ -146,14 +145,14 @@ public class MessageFragment extends BaseFragment<FragmentMessageBinding> {
     };
 
     private void getData() {
-        list.add(new MessageBean("0","https://scpic.chinaz.net/files/pic/pic9/201910/zzpic20534.jpg", "A随风奔跑的蒲公英", "上午11:58", "好的，暂时就这样",2));
-        list.add(new MessageBean("1","https://scpic.chinaz.net/files/pic/pic9/201903/zzpic16869.jpg", "A开花的仙人掌", "上午09:23", "明天上午九点见",1));
-        list.add(new MessageBean("2","https://scpic.chinaz.net/files/pic/pic9/201901/zzpic16133.jpg", "A东西南北", "上午07:51", "没得问题，具体的问题再详细讨论",2));
-        list.add(new MessageBean("3","https://scpic.chinaz.net/files/pic/pic9/201608/fpic6657.jpg", "A室友", "昨天", "今天中午吃啥饭？面条还是米饭？",0));
-        list.add(new MessageBean("4","https://scpic.chinaz.net/files/pic/pic9/202008/bpic20969.jpg", "B张大蓝", "昨天", "临时通知，明天上午10点的高数课改时间啊啊啊啊啊啊啊啊啊啊啊",0));
-        list.add(new MessageBean("5","https://scpic.chinaz.net/files/pic/pic7/xpic944.jpg", "B学姐王时宜", "昨天", "去年好像是7月2日，今年具体得等通知了",0));
+        list.add(new MessageEntity("0","https://scpic.chinaz.net/files/pic/pic9/201910/zzpic20534.jpg", "A随风奔跑的蒲公英", "上午11:58", "好的，暂时就这样",2));
+        list.add(new MessageEntity("1","https://scpic.chinaz.net/files/pic/pic9/201903/zzpic16869.jpg", "A开花的仙人掌", "上午09:23", "明天上午九点见",1));
+        list.add(new MessageEntity("2","https://scpic.chinaz.net/files/pic/pic9/201901/zzpic16133.jpg", "A东西南北", "上午07:51", "没得问题，具体的问题再详细讨论",2));
+        list.add(new MessageEntity("3","https://scpic.chinaz.net/files/pic/pic9/201608/fpic6657.jpg", "A室友", "昨天", "今天中午吃啥饭？面条还是米饭？",0));
+        list.add(new MessageEntity("4","https://scpic.chinaz.net/files/pic/pic9/202008/bpic20969.jpg", "B张大蓝", "昨天", "临时通知，明天上午10点的高数课改时间啊啊啊啊啊啊啊啊啊啊啊",0));
+        list.add(new MessageEntity("5","https://scpic.chinaz.net/files/pic/pic7/xpic944.jpg", "B学姐王时宜", "昨天", "去年好像是7月2日，今年具体得等通知了",0));
 
-        for (MessageBean bean : list.get()) {
+        for (MessageEntity bean : list.get()) {
             count.set(count.get() + bean.getCount());
         }
         adapter.notifyDataSetChanged();

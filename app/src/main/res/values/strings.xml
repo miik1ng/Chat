@@ -25,4 +25,6 @@
     <!--fragment_message-->
     <string name="message_search_hint">请输入关键词搜索聊天记录</string>
     <string name="message_no_data">暂无聊天记录</string>
+    <!--fragment_chat-->
+    <string name="chat_item_voice_second">%1$s″</string>
 </resources>

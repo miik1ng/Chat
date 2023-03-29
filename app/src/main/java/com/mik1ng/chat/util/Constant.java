@@ -8,4 +8,6 @@ public class Constant {
     public static final int ADAPTER_PAYLOADS_0 = 0;
     public static final int ADAPTER_PAYLOADS_1 = 1;
     public static final int ADAPTER_PAYLOADS_2 = 2;
+
+    public static final String BUNDLE_NAME = "NAME";
 }

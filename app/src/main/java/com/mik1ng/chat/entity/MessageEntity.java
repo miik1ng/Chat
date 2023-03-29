@@ -1,6 +1,6 @@
 package com.mik1ng.chat.entity;
 
-public class MessageBean {
+public class MessageEntity {
     private String id;
     private String avatar;
     private String name;
@@ -8,7 +8,7 @@ public class MessageBean {
     private String content;
     private int count;
 
-    public MessageBean(String id, String avatar, String name, String date, String content, int count) {
+    public MessageEntity(String id, String avatar, String name, String date, String content, int count) {
         this.id = id;
         this.avatar = avatar;
         this.name = name;

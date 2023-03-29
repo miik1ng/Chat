@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!--左边布局-->
+    <RelativeLayout
+        android:id="@+id/layout_left"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="70dp"
+        android:layout_marginStart="15dp"
+        android:visibility="gone">
+
+        <!--左边头像-->
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/iv_avatar_left"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="15dp"
+            android:scaleType="centerCrop"
+            app:roundPercent="1" />
+
+        <!--左边文字条-->
+        <TextView
+            android:id="@+id/tv_text_left"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/iv_avatar_left"
+            android:background="@drawable/shape_round_white_10"
+            android:padding="10dp"
+            android:textColor="@color/black_333"
+            android:textSize="15sp"
+            android:visibility="gone" />
+
+        <!--左边图片-->
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/iv_img_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/iv_avatar_left"
+            android:maxWidth="120dp"
+            android:scaleType="fitStart"
+            android:visibility="gone" />
+
+        <!--左边语音条-->
+        <LinearLayout
+            android:id="@+id/layout_voice_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/iv_avatar_left"
+            android:background="@drawable/shape_round_white_10"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            android:visibility="gone">
+
+            <androidx.constraintlayout.utils.widget.ImageFilterView
+                android:layout_width="17dp"
+                android:layout_height="17dp"
+                android:layout_marginEnd="8dp"
+                android:src="@mipmap/icon_voice_left" />
+
+            <TextView
+                android:id="@+id/tv_voice_second_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black_333"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+
+        <!--左边定位-->
+        <LinearLayout
+            android:id="@+id/layout_location_left"
+            android:orientation="vertical"
+            android:background="@drawable/shape_round_white_10"
+            android:layout_toEndOf="@+id/iv_avatar_left"
+            android:layout_alignParentTop="true"
+            android:layout_width="220dp"
+            android:layout_height="130dp"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tv_location_name_left"
+                android:textSize="16sp"
+                android:textColor="@color/black_333"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/tv_location_address_left"
+                android:textSize="12sp"
+                android:textColor="@color/black_999"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:layout_marginTop="6dp"
+                android:layout_marginHorizontal="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <androidx.constraintlayout.utils.widget.ImageFilterView
+                android:src="@mipmap/bg_location_map"
+                android:layout_weight="1"
+                android:scaleType="centerCrop"
+                android:layout_marginTop="9dp"
+                android:layout_width="match_parent"
+                android:layout_height="0dp" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <!--右边布局-->
+    <RelativeLayout
+        android:id="@+id/layout_right"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="15dp"
+        android:layout_marginStart="70dp"
+        android:visibility="gone">
+
+        <!--右边头像-->
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/iv_avatar_right"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="15dp"
+            android:scaleType="centerCrop"
+            app:roundPercent="1" />
+
+        <!--右边文字条-->
+        <TextView
+            android:id="@+id/tv_text_right"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toStartOf="@+id/iv_avatar_right"
+            android:background="@drawable/shape_round_279_10"
+            android:padding="10dp"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:visibility="gone" />
+
+        <!--右边图片-->
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/iv_img_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toStartOf="@+id/iv_avatar_right"
+            android:maxWidth="120dp"
+            android:scaleType="fitStart"
+            android:visibility="gone" />
+
+        <!--右边语音条-->
+        <LinearLayout
+            android:id="@+id/layout_voice_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toStartOf="@+id/iv_avatar_right"
+            android:background="@drawable/shape_round_279_10"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tv_voice_second_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black_333"
+                android:textSize="15sp" />
+
+            <androidx.constraintlayout.utils.widget.ImageFilterView
+                android:layout_width="17dp"
+                android:layout_height="17dp"
+                android:layout_marginStart="8dp"
+                android:src="@mipmap/icon_voice_right" />
+
+        </LinearLayout>
+
+        <!--右边定位-->
+        <LinearLayout
+            android:id="@+id/layout_location_right"
+            android:orientation="vertical"
+            android:background="@drawable/shape_round_white_10"
+            android:layout_toStartOf="@+id/iv_avatar_right"
+            android:layout_alignParentTop="true"
+            android:layout_width="220dp"
+            android:layout_height="130dp"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tv_location_name_right"
+                android:textSize="16sp"
+                android:textColor="@color/black_333"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/tv_location_address_right"
+                android:textSize="12sp"
+                android:textColor="@color/black_999"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:layout_marginTop="6dp"
+                android:layout_marginHorizontal="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <androidx.constraintlayout.utils.widget.ImageFilterView
+                android:src="@mipmap/bg_location_map"
+                android:layout_weight="1"
+                android:scaleType="centerCrop"
+                android:layout_marginTop="9dp"
+                android:layout_width="match_parent"
+                android:layout_height="0dp" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>
