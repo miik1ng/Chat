@@ -104,6 +104,7 @@ public class MessageFragment extends BaseFragment<FragmentMessageBinding> {
             }
             Bundle bundle = new Bundle();
             bundle.putString(Constant.BUNDLE_NAME, list.get(position).getName());
+            bundle.putString(Constant.BUNDLE_AVATAR, list.get(position).getAvatar());
             EventBus.getDefault().post(new OpenChatFragmentEvent(bundle));
         }
     };

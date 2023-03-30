@@ -27,11 +27,7 @@ public class MessageAdapter extends RecyclerView.Adapter<ViewHolder<ItemMessageB
     public MessageAdapter(Context context, List<MessageEntity> list) {
         layoutInflater = LayoutInflater.from(context);
         this.context = context;
-        if (list == null) {
-            this.list = new ArrayList<>();
-        } else {
-            this.list = list;
-        }
+        this.list = list;
     }
 
     @NonNull

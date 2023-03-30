@@ -4,8 +4,6 @@ package com.mik1ng.network.interceptor;
 import android.content.Context;
 
 import com.mik1ng.network.INetworkRequiredInfo;
-import com.mik1ng.network.bean.AuthBean;
-import com.mik1ng.network.utils.DateUtil;
 import com.mik1ng.network.utils.SharePreferenceConfig;
 import com.mik1ng.network.utils.SharedPreferenceUtils;
 
@@ -45,7 +43,7 @@ public class RequestInterceptor implements Interceptor {
     public Response intercept(Chain chain) throws IOException {
         Request request = changeRequestMethod(chain);
 
-        String nowDateTime = DateUtil.getNowDateTime();
+        //String nowDateTime = DateUtil.getNowDateTime();
         //构建器
         //构建器
         Request.Builder builder = null;
@@ -61,7 +59,7 @@ public class RequestInterceptor implements Interceptor {
         //添加版本名
         builder.addHeader("Client-Version", this.iNetworkRequiredInfo.getAppVersionName());
         //添加日期时间
-        builder.addHeader("datetime",nowDateTime);
+        //builder.addHeader("datetime",nowDateTime);
         builder.addHeader("Accept", "application/json");
         // token
         String token = SharedPreferenceUtils.getString(context, SharePreferenceConfig.SP_TOKEN);
