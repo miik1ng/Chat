@@ -22,6 +22,7 @@ public class Constant {
     public static final int CHAT_RECORD_TYPE_IMAGE = 1;         //聊天记录类型：图片
     public static final int CHAT_RECORD_TYPE_VOICE = 2;         //聊天记录类型：语音
     public static final int CHAT_RECORD_TYPE_LOCATION = 3;      //聊天记录类型：定位
+    public static final float CHAT_IMAGE_MAX_WIDTH = 150f;      //聊天记录图片最大宽度 单位:dp
 
     public static final String MY_AVATAR = "https://scpic.chinaz.net/files/pic/pic9/201510/apic15465.jpg";
 }

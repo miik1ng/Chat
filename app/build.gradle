@@ -1,5 +1,6 @@
 plugins {
     id 'com.android.application'
+    id 'org.greenrobot.greendao'
 }
 
 android {
@@ -28,6 +29,14 @@ android {
     buildFeatures {
         viewBinding true
     }
+    greendao {
+        // 指定数据库schema版本号，迁移等操作会用到
+        schemaVersion 1
+        // 设置生成数据库文件的目录，默认是在build中，可以将生成的文件放到我们的java目录中
+        targetGenDir 'src/main/java'
+        // 设置生成的数据库相关文件的包名，默认为entity所在的包名
+        daoPackage 'com.mik1ng.chat.greendao'
+    }
 }
 
 dependencies {
@@ -48,4 +57,6 @@ dependencies {
     implementation 'org.greenrobot:eventbus:3.3.1'
     // 全屏，状态栏等工具
     implementation 'com.qmuiteam:qmui:2.0.1'
+    //greendao
+    implementation 'org.greenrobot:greendao:3.3.0'
 }

@@ -6,6 +6,8 @@ public class ChatRecordEntity {
     private String avatar;              //头像
     private String text;                //聊天记录文本内容
     private String image;               //聊天记录图片
+    private float imgWidth;             //图片宽度
+    private float imgHeight;            //图片高度
     private int second;                 //语音时长 单位：秒
     private String locationName;        //定位的地点名称
     private String locationAddress;     //定位的地址
@@ -51,6 +53,22 @@ public class ChatRecordEntity {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public float getImgWidth() {
+        return imgWidth;
+    }
+
+    public void setImgWidth(float imgWidth) {
+        this.imgWidth = imgWidth;
+    }
+
+    public float getImgHeight() {
+        return imgHeight;
+    }
+
+    public void setImgHeight(float imgHeight) {
+        this.imgHeight = imgHeight;
     }
 
     public int getSecond() {
