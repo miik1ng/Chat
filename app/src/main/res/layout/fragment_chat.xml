@@ -65,6 +65,7 @@
             android:layout_height="25dp" />
 
         <EditText
+            android:id="@+id/et_input"
             android:layout_weight="1"
             android:textSize="15sp"
             android:textColor="@color/black_333"

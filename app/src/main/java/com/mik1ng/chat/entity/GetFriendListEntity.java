@@ -1,11 +1,26 @@
 package com.mik1ng.chat.entity;
 
-public class SearchUserEntity {
+import java.util.List;
+
+public class GetFriendListEntity {
+
+    /**
+     * code : 200
+     * data : [{"id":2,"username":"zhangsan","sex":null,"avatar":null,"nickname":"zhangsan"},{"id":12,"username":"17333781851","sex":null,"avatar":null,"nickname":"17333781851"}]
+     * message : null
+     */
 
     private int code;
-
-    private DataBean data;
     private String message;
+    /**
+     * id : 2
+     * username : zhangsan
+     * sex : null
+     * avatar : null
+     * nickname : zhangsan
+     */
+
+    private List<DataBean> data;
 
     public int getCode() {
         return code;
@@ -13,14 +28,6 @@ public class SearchUserEntity {
 
     public void setCode(int code) {
         this.code = code;
-    }
-
-    public DataBean getData() {
-        return data;
-    }
-
-    public void setData(DataBean data) {
-        this.data = data;
     }
 
     public String getMessage() {
@@ -31,12 +38,21 @@ public class SearchUserEntity {
         this.message = message;
     }
 
+    public List<DataBean> getData() {
+        return data;
+    }
+
+    public void setData(List<DataBean> data) {
+        this.data = data;
+    }
+
     public static class DataBean {
         private int id;
         private String username;
         private String sex;
         private String avatar;
         private String nickname;
+        private String remark;
 
         public int getId() {
             return id;
@@ -76,6 +92,14 @@ public class SearchUserEntity {
 
         public void setNickname(String nickname) {
             this.nickname = nickname;
+        }
+
+        public String getRemark() {
+            return remark;
+        }
+
+        public void setRemark(String remark) {
+            this.remark = remark;
         }
     }
 }

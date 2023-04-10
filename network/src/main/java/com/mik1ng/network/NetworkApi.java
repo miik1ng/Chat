@@ -53,10 +53,10 @@ public class NetworkApi {
         isFormal = NetworkEnvironmentActivity.isFormalEnvironment(networkRequiredInfo.getApplicationContext());
         if (!BuildConfig.DEBUG) {
             //正式环境
-            mBaseUrl = "http://www.xishishequ.com/";
+            mBaseUrl = "http://123.249.43.238:8080/";
         } else {
             //测试环境
-            mBaseUrl = "http://192.168.68.248:8080/";
+            mBaseUrl = "http://123.249.43.238:8080/";
         }
     }
 

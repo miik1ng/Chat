@@ -1,6 +1,7 @@
 package com.mik1ng.chat.ui.main;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -26,6 +27,9 @@ import com.mik1ng.chat.event.CloseChatFragmentEvent;
 import com.mik1ng.chat.event.OpenChatFragmentEvent;
 import com.mik1ng.chat.event.RefreshFriendsCountEvent;
 import com.mik1ng.chat.event.RefreshMessageCountEvent;
+import com.mik1ng.chat.event.SendChatRecordEvent;
+import com.mik1ng.chat.network.MyWebSocket;
+import com.mik1ng.chat.network.WebSocketCallback;
 import com.mik1ng.chat.ui.chat.ChatFragment;
 import com.mik1ng.chat.ui.main.FriendsFragment;
 import com.mik1ng.chat.ui.main.MessageFragment;
@@ -39,6 +43,9 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
 
     private NavController navController;
     private FragmentManager fragmentManager;
+
+    private MyWebSocket webSocket;
+    private final String TAG = "MainActivity------";
 
     @Override
     public ActivityMainBinding getViewBind() {
@@ -55,6 +62,12 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
         });
         initMessageTab();
         fragmentManager = getSupportFragmentManager();
+
+
+//        webSocket = MyWebSocket.getInstance("wss://demo.piesocket.com/v3/channel_1?api_key=VCXCEuvhGcBDP7XhiJJUDvR1e1D3eiVjgZ9VRiaV&notify_self");
+        webSocket = MyWebSocket.getInstance("ws://123.249.43.238:8080/fit/websocket/aa");
+        webSocket.setWebSocketCallback(callback);
+        webSocket.connect();
     }
 
     @Override
@@ -66,6 +79,35 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
     public boolean useEvent() {
         return true;
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+//        webSocket.cancel();
+        webSocket.close();
+    }
+
+    private WebSocketCallback callback = new WebSocketCallback() {
+        @Override
+        public void onOpen() {
+            Log.i(TAG, webSocket.getStatus().name());
+        }
+
+        @Override
+        public void onMessage(String text) {
+            Log.i(TAG, "收到：" + text);
+        }
+
+        @Override
+        public void onClose() {
+            Log.i(TAG, webSocket.getStatus().name());
+        }
+
+        @Override
+        public void onConnectError(Throwable throwable) {
+            Log.i(TAG, webSocket.getStatus().name());
+        }
+    };
 
     private void initNavigator() {
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.navigation_fragment);
@@ -163,5 +205,10 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
     public void closeChatFragment(CloseChatFragmentEvent event) {
         fragmentManager.popBackStack();
         viewBind.fragment.setVisibility(View.GONE);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void sendChatRecordEvent(SendChatRecordEvent event) {
+        webSocket.send(event.getRecord());
     }
 }

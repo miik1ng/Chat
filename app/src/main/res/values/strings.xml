@@ -27,4 +27,40 @@
     <string name="message_no_data">暂无聊天记录</string>
     <!--fragment_chat-->
     <string name="chat_item_voice_second">%1$s″</string>
+    <!--fragment_friends-->
+    <string name="friends_title">好友</string>
+    <string name="friends_search_hint">请输入关键词搜索好友</string>
+    <string name="friends_new">新朋友</string>
+    <string-array name="all_letters">
+        <item>A</item>
+        <item>B</item>
+        <item>C</item>
+        <item>D</item>
+        <item>E</item>
+        <item>F</item>
+        <item>G</item>
+        <item>H</item>
+        <item>I</item>
+        <item>J</item>
+        <item>K</item>
+        <item>L</item>
+        <item>M</item>
+        <item>N</item>
+        <item>O</item>
+        <item>P</item>
+        <item>Q</item>
+        <item>R</item>
+        <item>S</item>
+        <item>T</item>
+        <item>U</item>
+        <item>V</item>
+        <item>W</item>
+        <item>X</item>
+        <item>Y</item>
+        <item>Z</item>
+        <item>#</item>
+    </string-array>
+    <!--activity_search_friend-->
+    <string name="new_friend_title">新朋友</string>
+    <string name="new_friend_search_hint">请输入手机号添加好友</string>
 </resources>

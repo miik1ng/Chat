@@ -8,7 +8,6 @@ import com.mik1ng.network.bean.AuthBean;
 
 /**
  * 网络访问信息
- * @author llw
  */
 public class NetworkRequiredInfo implements INetworkRequiredInfo {
 

@@ -1,6 +1,7 @@
 package com.mik1ng.chat.network;
 
 import com.google.gson.Gson;
+import com.mik1ng.chat.entity.GetFriendListEntity;
 import com.mik1ng.chat.entity.LoginEntity;
 import com.mik1ng.chat.entity.RegisterEntity;
 import com.mik1ng.chat.entity.SearchUserEntity;
@@ -70,6 +71,18 @@ public class Api {
     public static Observable<SearchUserEntity> getMyInfo() {
         return apiService
                 .getMyInfo()
+                .subscribeOn(Schedulers.io())
+                .compose(NetworkApi.applySchedulers())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    /**
+     * 获取好友列表
+     * @return
+     */
+    public static Observable<GetFriendListEntity> getFriends() {
+        return apiService
+                .getFriends()
                 .subscribeOn(Schedulers.io())
                 .compose(NetworkApi.applySchedulers())
                 .observeOn(AndroidSchedulers.mainThread());

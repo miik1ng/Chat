@@ -1,5 +1,6 @@
 package com.mik1ng.chat.network;
 
+import com.mik1ng.chat.entity.GetFriendListEntity;
 import com.mik1ng.chat.entity.LoginEntity;
 import com.mik1ng.chat.entity.RegisterEntity;
 import com.mik1ng.chat.entity.SearchUserEntity;
@@ -16,6 +17,7 @@ public interface ApiService {
 
     /**
      * 注册
+     *
      * @param requestBody
      * @return
      */
@@ -24,6 +26,7 @@ public interface ApiService {
 
     /**
      * 登录
+     *
      * @param requestBody
      * @return
      */
@@ -32,6 +35,7 @@ public interface ApiService {
 
     /**
      * 查找用户
+     *
      * @return
      */
     @POST("fit/user/searchUser")
@@ -39,8 +43,12 @@ public interface ApiService {
 
     /**
      * 获取当前用户信息
+     *
      * @return
      */
     @GET("fit/user/myInformation")
     Observable<SearchUserEntity> getMyInfo();
+
+    @POST("fit/friend/getFriendByUserId")
+    Observable<GetFriendListEntity> getFriends();
 }

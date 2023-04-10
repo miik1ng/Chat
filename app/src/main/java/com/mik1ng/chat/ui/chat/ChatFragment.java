@@ -6,11 +6,14 @@ import android.content.Context;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.WindowInsets;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,6 +24,7 @@ import com.mik1ng.chat.base.BaseFragment;
 import com.mik1ng.chat.databinding.FragmentChatBinding;
 import com.mik1ng.chat.entity.ChatRecordEntity;
 import com.mik1ng.chat.event.CloseChatFragmentEvent;
+import com.mik1ng.chat.event.SendChatRecordEvent;
 import com.mik1ng.chat.util.Constant;
 import com.mik1ng.chat.util.DateUtils;
 
@@ -60,6 +64,8 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding> {
         });
 
         viewBind.getRoot().setOnApplyWindowInsetsListener(applyWindowInsetsListener);
+
+        viewBind.etInput.setOnEditorActionListener(onEditorActionListener);
     }
 
     @Override
@@ -81,6 +87,19 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding> {
         @Override
         public void onClick(View view) {
             EventBus.getDefault().post(new CloseChatFragmentEvent());
+        }
+    };
+
+    /**
+     * 发送
+     */
+    TextView.OnEditorActionListener onEditorActionListener = new TextView.OnEditorActionListener() {
+        @Override
+        public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+            if (i == EditorInfo.IME_ACTION_SEND) {
+                EventBus.getDefault().post(new SendChatRecordEvent(viewBind.etInput.getText().toString()));
+            }
+            return false;
         }
     };
 
