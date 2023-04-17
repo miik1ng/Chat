@@ -56,9 +56,6 @@ import retrofit2.Response;
 
 /**
  * @Describe 转换相关工具类
- * @Author Jungle68
- * @Date 2016/12/15
- * @Contact 335891510@qq.com
  */
 
 public class ConvertUtils {

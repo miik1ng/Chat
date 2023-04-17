@@ -42,8 +42,24 @@ public class ArrayListObservable<T> {
         }
     }
 
+    public boolean remove(Object o) {
+        boolean b = list.remove(o);
+        if (observe != null) {
+            observe.update(list);
+        }
+        return b;
+    }
+
     public T remove(int index) {
-        return list.remove(index);
+        T t = list.remove(index);
+        if (observe != null) {
+            observe.update(list);
+        }
+        return t;
+    }
+
+    public void clear() {
+        list.clear();
     }
 
     private Observe<ArrayList<T>> observe;

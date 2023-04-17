@@ -1,22 +1,14 @@
 package com.mik1ng.chat.adapter;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.ImageViewTarget;
-import com.bumptech.glide.request.target.Target;
-import com.bumptech.glide.request.transition.Transition;
 import com.mik1ng.chat.R;
 import com.mik1ng.chat.databinding.ItemChatBinding;
 import com.mik1ng.chat.entity.ChatRecordEntity;
@@ -24,6 +16,7 @@ import com.mik1ng.chat.util.Constant;
 import com.mik1ng.chat.util.DateUtils;
 import com.mik1ng.chat.util.DensityUtils;
 
+import java.io.File;
 import java.util.List;
 
 public class ChatAdapter extends RecyclerView.Adapter<ViewHolder<ItemChatBinding>> {
@@ -63,16 +56,14 @@ public class ChatAdapter extends RecyclerView.Adapter<ViewHolder<ItemChatBinding
                 case Constant.CHAT_RECORD_TYPE_IMAGE:
                     //图片
                     if (list.get(position).getImgWidth() > 0) {
-                        if (list.get(position).getImgWidth() < DensityUtils.dp2px(context, Constant.CHAT_IMAGE_MAX_WIDTH)) {
+                        if (list.get(position).getImgWidth() < DensityUtils.dp2px(context, Constant.CHAT_RECORD_MAX_WIDTH)) {
                             holder.bind.ivImgLeft.getLayoutParams().width = (int) list.get(position).getImgWidth();
                             holder.bind.ivImgLeft.getLayoutParams().height = (int) list.get(position).getImgHeight();
                         } else {
-                            holder.bind.ivImgLeft.getLayoutParams().width = DensityUtils.dp2px(context, Constant.CHAT_IMAGE_MAX_WIDTH);
-                            holder.bind.ivImgLeft.getLayoutParams().height = DensityUtils.dp2px(context, (Constant.CHAT_IMAGE_MAX_WIDTH * list.get(position).getImgHeight()) / list.get(position).getImgWidth());
+                            holder.bind.ivImgLeft.getLayoutParams().width = DensityUtils.dp2px(context, Constant.CHAT_RECORD_MAX_WIDTH);
+                            holder.bind.ivImgLeft.getLayoutParams().height = DensityUtils.dp2px(context, (Constant.CHAT_RECORD_MAX_WIDTH * list.get(position).getImgHeight()) / list.get(position).getImgWidth());
                         }
                     }
-
-
                     Glide.with(context)
                             .load(list.get(position).getImage())
                             .into(holder.bind.ivImgLeft);
@@ -80,6 +71,9 @@ public class ChatAdapter extends RecyclerView.Adapter<ViewHolder<ItemChatBinding
                 case Constant.CHAT_RECORD_TYPE_VOICE:
                     //语音条
                     holder.bind.tvVoiceSecondLeft.setText(context.getString(R.string.chat_item_voice_second, String.valueOf(list.get(position).getSecond())));
+                    ViewGroup.LayoutParams layoutParams = holder.bind.tvVoiceSecondLeft.getLayoutParams();
+                    layoutParams.width = DensityUtils.dp2px(context, Constant.CHAT_RECORD_MIN_WIDTH) + DensityUtils.dp2px(context, Constant.CHAT_RECORD_MAX_WIDTH) * list.get(position).getSecond() / 60;
+                    holder.bind.tvVoiceSecondLeft.setLayoutParams(layoutParams);
                     break;
                 case Constant.CHAT_RECORD_TYPE_LOCATION:
                     //定位
@@ -101,12 +95,12 @@ public class ChatAdapter extends RecyclerView.Adapter<ViewHolder<ItemChatBinding
                 case Constant.CHAT_RECORD_TYPE_IMAGE:
                     //图片
                     if (list.get(position).getImgWidth() > 0) {
-                        if (list.get(position).getImgWidth() < DensityUtils.dp2px(context, Constant.CHAT_IMAGE_MAX_WIDTH)) {
+                        if (list.get(position).getImgWidth() < DensityUtils.dp2px(context, Constant.CHAT_RECORD_MAX_WIDTH)) {
                             holder.bind.ivImgRight.getLayoutParams().width = (int) list.get(position).getImgWidth();
                             holder.bind.ivImgRight.getLayoutParams().height = (int) list.get(position).getImgHeight();
                         } else {
-                            holder.bind.ivImgRight.getLayoutParams().width = DensityUtils.dp2px(context, Constant.CHAT_IMAGE_MAX_WIDTH);
-                            holder.bind.ivImgRight.getLayoutParams().height = DensityUtils.dp2px(context, (Constant.CHAT_IMAGE_MAX_WIDTH * list.get(position).getImgHeight()) / list.get(position).getImgWidth());
+                            holder.bind.ivImgRight.getLayoutParams().width = DensityUtils.dp2px(context, Constant.CHAT_RECORD_MAX_WIDTH);
+                            holder.bind.ivImgRight.getLayoutParams().height = DensityUtils.dp2px(context, (Constant.CHAT_RECORD_MAX_WIDTH * list.get(position).getImgHeight()) / list.get(position).getImgWidth());
                         }
                     }
 
@@ -117,6 +111,9 @@ public class ChatAdapter extends RecyclerView.Adapter<ViewHolder<ItemChatBinding
                 case Constant.CHAT_RECORD_TYPE_VOICE:
                     //语音条
                     holder.bind.tvVoiceSecondRight.setText(context.getString(R.string.chat_item_voice_second, String.valueOf(list.get(position).getSecond())));
+                    ViewGroup.LayoutParams layoutParams = holder.bind.tvVoiceSecondRight.getLayoutParams();
+                    layoutParams.width = DensityUtils.dp2px(context, Constant.CHAT_RECORD_MIN_WIDTH) + DensityUtils.dp2px(context, Constant.CHAT_RECORD_MAX_WIDTH) * list.get(position).getSecond() / 60;
+                    holder.bind.tvVoiceSecondRight.setLayoutParams(layoutParams);
                     break;
                 case Constant.CHAT_RECORD_TYPE_LOCATION:
                     //定位
@@ -129,6 +126,12 @@ public class ChatAdapter extends RecyclerView.Adapter<ViewHolder<ItemChatBinding
             //时间
             holder.bind.tvTimeCenter.setText(DateUtils.getMmDdHhMmSs(list.get(position).getTimestamp()));
         }
+
+        holder.bind.getRoot().setOnClickListener(view -> {
+            if (onItemClickListener != null) {
+                onItemClickListener.onClick(holder.getLayoutPosition());
+            }
+        });
     }
 
     @Override
@@ -156,5 +159,15 @@ public class ChatAdapter extends RecyclerView.Adapter<ViewHolder<ItemChatBinding
         holder.bind.layoutVoiceRight.setVisibility(type == Constant.CHAT_RECORD_TYPE_VOICE ? View.VISIBLE : View.GONE);
         holder.bind.layoutLocationLeft.setVisibility(type == Constant.CHAT_RECORD_TYPE_LOCATION ? View.VISIBLE : View.GONE);
         holder.bind.layoutLocationRight.setVisibility(type == Constant.CHAT_RECORD_TYPE_LOCATION ? View.VISIBLE : View.GONE);
+    }
+
+    private OnItemClickListener onItemClickListener;
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.onItemClickListener = listener;
+    }
+
+    public interface OnItemClickListener {
+        void onClick(int position);
     }
 }

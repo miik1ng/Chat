@@ -46,17 +46,17 @@ public class NetworkApi {
     /**
      * 初始化
      */
-    public static void init(Context context, INetworkRequiredInfo networkRequiredInfo) {
+    public static void init(Context context, String releaseIP, String debugIP, INetworkRequiredInfo networkRequiredInfo) {
         mContext = context;
         iNetworkRequiredInfo = networkRequiredInfo;
         //当初始化这个NetworkApi时，会判断当前App的网络环境
         isFormal = NetworkEnvironmentActivity.isFormalEnvironment(networkRequiredInfo.getApplicationContext());
         if (!BuildConfig.DEBUG) {
             //正式环境
-            mBaseUrl = "http://123.249.43.238:8080/";
+            mBaseUrl = "http://" + releaseIP + "/";
         } else {
             //测试环境
-            mBaseUrl = "http://123.249.43.238:8080/";
+            mBaseUrl = "http://" + debugIP + "/";
         }
     }
 

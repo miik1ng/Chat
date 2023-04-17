@@ -22,16 +22,28 @@
 
         <LinearLayout
             android:id="@+id/layout_back"
+            android:orientation="horizontal"
             android:gravity="center"
             android:layout_alignParentStart="true"
-            android:layout_width="50dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent">
 
             <ImageView
+                android:layout_width="14dp"
+                android:layout_height="15dp"
+                android:layout_marginStart="10dp"
                 android:src="@mipmap/icon_back"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
                 tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/tv_message_count"
+                android:textSize="15sp"
+                android:textColor="@color/black_333"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"/>
 
         </LinearLayout>
 
@@ -91,6 +103,30 @@
             android:layout_marginStart="13dp"
             android:layout_width="25dp"
             android:layout_height="25dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_voice"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tv_voice_tip"
+            android:text="@string/chat_voice_tip"
+            android:textSize="15sp"
+            android:textColor="@color/black_999"
+            android:layout_marginBottom="25dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <com.mik1ng.chat.weight.VoiceView
+            android:id="@+id/vv_voice"
+            android:layout_width="80dp"
+            android:layout_height="80dp" />
 
     </LinearLayout>
 

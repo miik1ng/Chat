@@ -37,6 +37,12 @@ android {
         // 设置生成的数据库相关文件的包名，默认为entity所在的包名
         daoPackage 'com.mik1ng.chat.greendao'
     }
+    defaultConfig {
+        ndk {
+            //设置支持的SO库架构（开发者可以根据需要，选择一个或多个平台的so）
+            abiFilters "armeabi", "armeabi-v7a", "arm64-v8a", "x86","x86_64"
+        }
+    }
 }
 
 dependencies {
@@ -59,5 +65,16 @@ dependencies {
     implementation 'com.qmuiteam:qmui:2.0.1'
     //greendao
     implementation 'org.greenrobot:greendao:3.3.0'
+    //汉字转拼音
     implementation 'com.belerweb:pinyin4j:2.5.0'
+    implementation 'io.github.lucksiege:pictureselector:v3.11.0'
+
+    //map
+    implementation 'com.amap.api:3dmap:9.2.1'
+    implementation 'com.amap.api:location:latest.integration'
+    implementation 'com.amap.api:search:latest.integration'
+
+    //权限
+    implementation 'com.github.tbruyelle:rxpermissions:0.12'
+    implementation 'io.reactivex.rxjava3:rxjava:3.1.5'
 }

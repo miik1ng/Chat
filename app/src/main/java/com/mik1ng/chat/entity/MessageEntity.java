@@ -1,15 +1,16 @@
 package com.mik1ng.chat.entity;
 
 public class MessageEntity {
-    private String id;
+    private int userID;
     private String avatar;
     private String name;
     private String date;
     private String content;
     private int count;
+    private long timestamp;
 
-    public MessageEntity(String id, String avatar, String name, String date, String content, int count) {
-        this.id = id;
+    public MessageEntity(int userID, String avatar, String name, String date, String content, int count) {
+        this.userID = userID;
         this.avatar = avatar;
         this.name = name;
         this.date = date;
@@ -17,12 +18,22 @@ public class MessageEntity {
         this.count = count;
     }
 
-    public String getId() {
-        return id;
+    public MessageEntity(int userID, String avatar, String name, String date, String content, int count, long timestamp) {
+        this.userID = userID;
+        this.avatar = avatar;
+        this.name = name;
+        this.date = date;
+        this.content = content;
+        this.count = count;
+        this.timestamp = timestamp;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public int getUserID() {
+        return userID;
+    }
+
+    public void setUserID(int userID) {
+        this.userID = userID;
     }
 
     public String getAvatar() {
@@ -63,5 +74,13 @@ public class MessageEntity {
 
     public void setCount(int count) {
         this.count = count;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
     }
 }

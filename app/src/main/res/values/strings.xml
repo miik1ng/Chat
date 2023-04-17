@@ -25,8 +25,10 @@
     <!--fragment_message-->
     <string name="message_search_hint">请输入关键词搜索聊天记录</string>
     <string name="message_no_data">暂无聊天记录</string>
-    <!--fragment_chat-->
+    <!--activity_chat-->
     <string name="chat_item_voice_second">%1$s″</string>
+    <string name="chat_voice_tip">按住说话</string>
+    <string name="chat_voice_second">%1$ss</string>
     <!--fragment_friends-->
     <string name="friends_title">好友</string>
     <string name="friends_search_hint">请输入关键词搜索好友</string>
@@ -62,5 +64,21 @@
     </string-array>
     <!--activity_search_friend-->
     <string name="new_friend_title">新朋友</string>
-    <string name="new_friend_search_hint">请输入手机号添加好友</string>
+    <string name="new_friend_search_hint">请输入手机号搜索好友</string>
+    <string name="new_friend_no_friend">该用户不存在</string>
+    <string name="new_friend_already">已添加</string>
+    <string name="new_friend_agree">同\u3000意</string>
+    <!--activity_map-->
+    <string name="map_cancel">取消</string>
+    <string name="map_send">发送</string>
+    <string name="map_search_hint">搜索地点</string>
+    <string name="map_back">返回</string>
+    <!--activity_friend-->
+    <string name="friend_add">添加好友</string>
+    <string name="friend_agree">同意</string>
+    <string name="friend_send_message">发消息</string>
+    <!--fragment_mine-->
+    <string name="mine_setting">设置</string>
+    <string name="mine_quit">退出登录</string>
+    <string name="mine_logout">注销账号</string>
 </resources>

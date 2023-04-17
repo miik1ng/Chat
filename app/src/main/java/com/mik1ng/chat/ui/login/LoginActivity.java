@@ -144,6 +144,12 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding> {
                 if (loginEntity.getCode() == 200) {
                     // todo登录成功
                     SharedPreferenceUtils.saveString(LoginActivity.this, Constant.SP_TOKEN, loginEntity.getData().getToken());
+                    SharedPreferenceUtils.saveInt(LoginActivity.this,Constant.SP_USERID,loginEntity.getData().getUser().getId());
+                    SharedPreferenceUtils.saveString(LoginActivity.this, Constant.SP_AVATAR, loginEntity.getData().getUser().getAvatar());
+                    SharedPreferenceUtils.saveString(LoginActivity.this, Constant.SP_USERNAME, loginEntity.getData().getUser().getNickname());
+                    Constant.USER_ID = loginEntity.getData().getUser().getId();
+                    Constant.MY_AVATAR = loginEntity.getData().getUser().getAvatar();
+                    Constant.USER_NAME = loginEntity.getData().getUser().getNickname();
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
                     finish();
                 }

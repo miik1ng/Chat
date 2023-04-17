@@ -25,9 +25,22 @@ public class ChatRecordEntityDao extends AbstractDao<ChatRecordEntity, Long> {
      */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property Username = new Property(1, String.class, "username", false, "USERNAME");
-        public final static Property Record = new Property(2, String.class, "record", false, "RECORD");
-        public final static Property Password = new Property(3, String.class, "password", false, "PASSWORD");
+        public final static Property MyID = new Property(1, int.class, "myID", false, "MY_ID");
+        public final static Property UserID = new Property(2, int.class, "userID", false, "USER_ID");
+        public final static Property UserName = new Property(3, String.class, "userName", false, "USER_NAME");
+        public final static Property RecordMode = new Property(4, int.class, "recordMode", false, "RECORD_MODE");
+        public final static Property RecordType = new Property(5, int.class, "recordType", false, "RECORD_TYPE");
+        public final static Property Text = new Property(6, String.class, "text", false, "TEXT");
+        public final static Property Image = new Property(7, String.class, "image", false, "IMAGE");
+        public final static Property ImgWidth = new Property(8, float.class, "imgWidth", false, "IMG_WIDTH");
+        public final static Property ImgHeight = new Property(9, float.class, "imgHeight", false, "IMG_HEIGHT");
+        public final static Property Second = new Property(10, int.class, "second", false, "SECOND");
+        public final static Property MediaPath = new Property(11, String.class, "mediaPath", false, "MEDIA_PATH");
+        public final static Property LocationName = new Property(12, String.class, "locationName", false, "LOCATION_NAME");
+        public final static Property LocationAddress = new Property(13, String.class, "locationAddress", false, "LOCATION_ADDRESS");
+        public final static Property Longitude = new Property(14, double.class, "longitude", false, "LONGITUDE");
+        public final static Property Latitude = new Property(15, double.class, "latitude", false, "LATITUDE");
+        public final static Property Timestamp = new Property(16, long.class, "timestamp", false, "TIMESTAMP");
     }
 
 
@@ -44,9 +57,22 @@ public class ChatRecordEntityDao extends AbstractDao<ChatRecordEntity, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"CHAT_RECORD_ENTITY\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
-                "\"USERNAME\" TEXT," + // 1: username
-                "\"RECORD\" TEXT," + // 2: record
-                "\"PASSWORD\" TEXT);"); // 3: password
+                "\"MY_ID\" INTEGER NOT NULL ," + // 1: myID
+                "\"USER_ID\" INTEGER NOT NULL ," + // 2: userID
+                "\"USER_NAME\" TEXT," + // 3: userName
+                "\"RECORD_MODE\" INTEGER NOT NULL ," + // 4: recordMode
+                "\"RECORD_TYPE\" INTEGER NOT NULL ," + // 5: recordType
+                "\"TEXT\" TEXT," + // 6: text
+                "\"IMAGE\" TEXT," + // 7: image
+                "\"IMG_WIDTH\" REAL NOT NULL ," + // 8: imgWidth
+                "\"IMG_HEIGHT\" REAL NOT NULL ," + // 9: imgHeight
+                "\"SECOND\" INTEGER NOT NULL ," + // 10: second
+                "\"MEDIA_PATH\" TEXT," + // 11: mediaPath
+                "\"LOCATION_NAME\" TEXT," + // 12: locationName
+                "\"LOCATION_ADDRESS\" TEXT," + // 13: locationAddress
+                "\"LONGITUDE\" REAL NOT NULL ," + // 14: longitude
+                "\"LATITUDE\" REAL NOT NULL ," + // 15: latitude
+                "\"TIMESTAMP\" INTEGER NOT NULL );"); // 16: timestamp
     }
 
     /** Drops the underlying database table. */
@@ -63,21 +89,46 @@ public class ChatRecordEntityDao extends AbstractDao<ChatRecordEntity, Long> {
         if (id != null) {
             stmt.bindLong(1, id);
         }
+        stmt.bindLong(2, entity.getMyID());
+        stmt.bindLong(3, entity.getUserID());
  
-        String username = entity.getUsername();
-        if (username != null) {
-            stmt.bindString(2, username);
+        String userName = entity.getUserName();
+        if (userName != null) {
+            stmt.bindString(4, userName);
+        }
+        stmt.bindLong(5, entity.getRecordMode());
+        stmt.bindLong(6, entity.getRecordType());
+ 
+        String text = entity.getText();
+        if (text != null) {
+            stmt.bindString(7, text);
         }
  
-        String record = entity.getRecord();
-        if (record != null) {
-            stmt.bindString(3, record);
+        String image = entity.getImage();
+        if (image != null) {
+            stmt.bindString(8, image);
+        }
+        stmt.bindDouble(9, entity.getImgWidth());
+        stmt.bindDouble(10, entity.getImgHeight());
+        stmt.bindLong(11, entity.getSecond());
+ 
+        String mediaPath = entity.getMediaPath();
+        if (mediaPath != null) {
+            stmt.bindString(12, mediaPath);
         }
  
-        String password = entity.getPassword();
-        if (password != null) {
-            stmt.bindString(4, password);
+        String locationName = entity.getLocationName();
+        if (locationName != null) {
+            stmt.bindString(13, locationName);
         }
+ 
+        String locationAddress = entity.getLocationAddress();
+        if (locationAddress != null) {
+            stmt.bindString(14, locationAddress);
+        }
+        stmt.bindDouble(15, entity.getLongitude());
+        stmt.bindDouble(16, entity.getLatitude());
+        stmt.bindLong(17, entity.getTimestamp());
     }
 
     @Override
@@ -88,21 +139,46 @@ public class ChatRecordEntityDao extends AbstractDao<ChatRecordEntity, Long> {
         if (id != null) {
             stmt.bindLong(1, id);
         }
+        stmt.bindLong(2, entity.getMyID());
+        stmt.bindLong(3, entity.getUserID());
  
-        String username = entity.getUsername();
-        if (username != null) {
-            stmt.bindString(2, username);
+        String userName = entity.getUserName();
+        if (userName != null) {
+            stmt.bindString(4, userName);
+        }
+        stmt.bindLong(5, entity.getRecordMode());
+        stmt.bindLong(6, entity.getRecordType());
+ 
+        String text = entity.getText();
+        if (text != null) {
+            stmt.bindString(7, text);
         }
  
-        String record = entity.getRecord();
-        if (record != null) {
-            stmt.bindString(3, record);
+        String image = entity.getImage();
+        if (image != null) {
+            stmt.bindString(8, image);
+        }
+        stmt.bindDouble(9, entity.getImgWidth());
+        stmt.bindDouble(10, entity.getImgHeight());
+        stmt.bindLong(11, entity.getSecond());
+ 
+        String mediaPath = entity.getMediaPath();
+        if (mediaPath != null) {
+            stmt.bindString(12, mediaPath);
         }
  
-        String password = entity.getPassword();
-        if (password != null) {
-            stmt.bindString(4, password);
+        String locationName = entity.getLocationName();
+        if (locationName != null) {
+            stmt.bindString(13, locationName);
         }
+ 
+        String locationAddress = entity.getLocationAddress();
+        if (locationAddress != null) {
+            stmt.bindString(14, locationAddress);
+        }
+        stmt.bindDouble(15, entity.getLongitude());
+        stmt.bindDouble(16, entity.getLatitude());
+        stmt.bindLong(17, entity.getTimestamp());
     }
 
     @Override
@@ -114,9 +190,22 @@ public class ChatRecordEntityDao extends AbstractDao<ChatRecordEntity, Long> {
     public ChatRecordEntity readEntity(Cursor cursor, int offset) {
         ChatRecordEntity entity = new ChatRecordEntity( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // username
-            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // record
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3) // password
+            cursor.getInt(offset + 1), // myID
+            cursor.getInt(offset + 2), // userID
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // userName
+            cursor.getInt(offset + 4), // recordMode
+            cursor.getInt(offset + 5), // recordType
+            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // text
+            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // image
+            cursor.getFloat(offset + 8), // imgWidth
+            cursor.getFloat(offset + 9), // imgHeight
+            cursor.getInt(offset + 10), // second
+            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // mediaPath
+            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12), // locationName
+            cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13), // locationAddress
+            cursor.getDouble(offset + 14), // longitude
+            cursor.getDouble(offset + 15), // latitude
+            cursor.getLong(offset + 16) // timestamp
         );
         return entity;
     }
@@ -124,9 +213,22 @@ public class ChatRecordEntityDao extends AbstractDao<ChatRecordEntity, Long> {
     @Override
     public void readEntity(Cursor cursor, ChatRecordEntity entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setUsername(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
-        entity.setRecord(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setPassword(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setMyID(cursor.getInt(offset + 1));
+        entity.setUserID(cursor.getInt(offset + 2));
+        entity.setUserName(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setRecordMode(cursor.getInt(offset + 4));
+        entity.setRecordType(cursor.getInt(offset + 5));
+        entity.setText(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
+        entity.setImage(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
+        entity.setImgWidth(cursor.getFloat(offset + 8));
+        entity.setImgHeight(cursor.getFloat(offset + 9));
+        entity.setSecond(cursor.getInt(offset + 10));
+        entity.setMediaPath(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
+        entity.setLocationName(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
+        entity.setLocationAddress(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
+        entity.setLongitude(cursor.getDouble(offset + 14));
+        entity.setLatitude(cursor.getDouble(offset + 15));
+        entity.setTimestamp(cursor.getLong(offset + 16));
      }
     
     @Override

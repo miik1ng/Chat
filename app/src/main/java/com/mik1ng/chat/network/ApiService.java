@@ -41,6 +41,9 @@ public interface ApiService {
     @POST("fit/user/searchUser")
     Observable<SearchUserEntity> searchUser(@Query("username") String username);
 
+    @POST("fit/user/searchUserById")
+    Observable<SearchUserEntity> searchUser(@Query("userId") int userID);
+
     /**
      * 获取当前用户信息
      *

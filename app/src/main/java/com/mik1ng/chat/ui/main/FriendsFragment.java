@@ -1,6 +1,7 @@
 package com.mik1ng.chat.ui.main;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -11,7 +12,9 @@ import com.mik1ng.chat.databinding.FragmentFriendsBinding;
 import com.mik1ng.chat.entity.FriendEntity;
 import com.mik1ng.chat.entity.GetFriendListEntity;
 import com.mik1ng.chat.network.Api;
+import com.mik1ng.chat.ui.newfriend.FriendActivity;
 import com.mik1ng.chat.ui.newfriend.SearchFriendActivity;
+import com.mik1ng.chat.util.Constant;
 import com.mik1ng.network.observer.BaseObserver;
 
 import java.util.ArrayList;
@@ -19,7 +22,6 @@ import java.util.List;
 
 public class FriendsFragment extends BaseFragment<FragmentFriendsBinding> {
 
-    private List<FriendEntity> data = new ArrayList<>();
     private List<FriendEntity> entities = new ArrayList<>();
     private FriendsAdapter adapter;
 
@@ -58,7 +60,14 @@ public class FriendsFragment extends BaseFragment<FragmentFriendsBinding> {
     FriendsAdapter.OnItemClickListener onItemClickListener = new FriendsAdapter.OnItemClickListener() {
         @Override
         public void onClick(int position) {
-
+            Intent intent = new Intent(getContext(), FriendActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putInt(Constant.BUNDLE_ID, entities.get(position).getId());
+            bundle.putInt(Constant.BUNDLE_FRIEND_STATE, Constant.FRIEND_STATE_ADD);
+            bundle.putString(Constant.BUNDLE_NAME, entities.get(position).getNickName());
+            bundle.putString(Constant.BUNDLE_AVATAR, entities.get(position).getAvatar());
+            intent.putExtras(bundle);
+            startActivity(intent);
         }
     };
 

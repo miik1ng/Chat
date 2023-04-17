@@ -1,5 +1,8 @@
 package com.mik1ng.chat.network;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -53,10 +56,12 @@ public class MyWebSocket extends WebSocketListener {
         }
     }
 
-    public void send(String s) {
+    public boolean send(String s) {
+        boolean b = false;
         if (webSocket != null) {
-            webSocket.send(s);
+            b = webSocket.send(s);
         }
+        return b;
     }
 
     public void cancel() {
@@ -75,16 +80,21 @@ public class MyWebSocket extends WebSocketListener {
     public void onOpen(WebSocket webSocket, Response response) {
         super.onOpen(webSocket, response);
         this.status = ConnectStatus.Open;
-        if (callback != null) {
-            callback.onOpen();
+        for (WebSocketCallback callback : callbacks) {
+            if (callback != null) {
+                callback.onOpen();
+            }
         }
     }
 
     @Override
     public void onMessage(WebSocket webSocket, String text) {
         super.onMessage(webSocket, text);
-        if (callback != null) {
-            callback.onMessage(text);
+
+        for (WebSocketCallback callback : callbacks) {
+            if (callback != null) {
+                callback.onMessage(text);
+            }
         }
     }
 
@@ -97,14 +107,21 @@ public class MyWebSocket extends WebSocketListener {
     public void onClosing(WebSocket webSocket, int code, String reason) {
         super.onClosing(webSocket, code, reason);
         this.status = ConnectStatus.Closing;
+        for (WebSocketCallback callback : callbacks) {
+            if (callback != null) {
+                callback.onClosing();
+            }
+        }
     }
 
     @Override
     public void onClosed(WebSocket webSocket, int code, String reason) {
         super.onClosed(webSocket, code, reason);
         this.status = ConnectStatus.Closed;
-        if (callback != null) {
-            callback.onClose();
+        for (WebSocketCallback callback : callbacks) {
+            if (callback != null) {
+                callback.onClose();
+            }
         }
     }
 
@@ -113,18 +130,32 @@ public class MyWebSocket extends WebSocketListener {
         super.onFailure(webSocket, t, response);
         t.printStackTrace();
         this.status = ConnectStatus.Canceled;
-        if (callback != null) {
-            callback.onConnectError(t);
+
+        for (WebSocketCallback callback : callbacks) {
+            if (callback != null) {
+                callback.onConnectError(t);
+            }
         }
     }
 
-    public WebSocketCallback callback;
+    //public WebSocketCallback callback;
+    public List<WebSocketCallback> callbacks = new ArrayList<>();
 
-    public void setWebSocketCallback(WebSocketCallback callback) {
-        this.callback = callback;
+//    public void setWebSocketCallback(WebSocketCallback callback) {
+//        this.callback = callback;
+//    }
+
+    public void addWebSocketCallback(WebSocketCallback callback) {
+        callbacks.add(callback);
     }
 
-    public void removeSocketIOCallback() {
-        callback = null;
+//    public void removeSocketIOCallback() {
+//        callback = null;
+//    }
+
+    public void removeWebSocketCallback(WebSocketCallback callback) {
+        if (callbacks.contains(callback)) {
+            callbacks.remove(callback);
+        }
     }
 }

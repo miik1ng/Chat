@@ -61,7 +61,7 @@ public class MessageAdapter extends RecyclerView.Adapter<ViewHolder<ItemMessageB
 
         holder.bind.getRoot().setOnLongClickListener(view -> {
             if (onItemLongClickListener == null) return false;
-            return onItemLongClickListener.onLongClick(position);
+            return onItemLongClickListener.onLongClick(holder.getLayoutPosition());
         });
     }
 
@@ -72,26 +72,26 @@ public class MessageAdapter extends RecyclerView.Adapter<ViewHolder<ItemMessageB
             return;
         }
 
-        switch ((int) payloads.get(0)) {
-            case Constant.ADAPTER_PAYLOADS_0:               //改变红点状态
-                if (list.get(position).getCount() > 0) {
-                    holder.bind.tvCount.setText(String.valueOf(list.get(position).getCount()));
-                    holder.bind.tvCount.setVisibility(View.VISIBLE);
-                } else {
-                    holder.bind.tvCount.setText(String.valueOf(list.get(position).getCount()));
-                    holder.bind.tvCount.setVisibility(View.GONE);
-                }
-                break;
-            case Constant.ADAPTER_PAYLOADS_1:               //改变时间
-                holder.bind.tvDate.setText(list.get(position).getDate());
-                break;
-            case Constant.ADAPTER_PAYLOADS_2:               //改变内容
-                holder.bind.tvContent.setText(list.get(position).getContent());
-                break;
+        for (Object o : payloads) {
+            switch ((int) o) {
+                case Constant.ADAPTER_PAYLOADS_0:               //改变红点状态
+                    if (list.get(position).getCount() > 0) {
+                        holder.bind.tvCount.setText(String.valueOf(list.get(position).getCount()));
+                        holder.bind.tvCount.setVisibility(View.VISIBLE);
+                    } else {
+                        holder.bind.tvCount.setText(String.valueOf(list.get(position).getCount()));
+                        holder.bind.tvCount.setVisibility(View.GONE);
+                    }
+                    break;
+                case Constant.ADAPTER_PAYLOADS_1:               //改变时间
+                    holder.bind.tvDate.setText(list.get(position).getDate());
+                    break;
+                case Constant.ADAPTER_PAYLOADS_2:               //改变内容
+                    holder.bind.tvContent.setText(list.get(position).getContent());
+                    break;
+            }
         }
     }
-
-
 
     @Override
     public int getItemCount() {

@@ -35,4 +35,25 @@ public class SharedPreferenceUtils {
         }
         return mSharedPreferences.getBoolean(key, false);
     }
+
+    public static void saveInt(Context context, String key, int value) {
+        if (mSharedPreferences == null) {
+            mSharedPreferences = context.getSharedPreferences(Constant.SP_NAME, Context.MODE_PRIVATE);
+        }
+        mSharedPreferences.edit().putInt(key, value).apply();
+    }
+
+    public static int getInt(Context context, String key) {
+        if (mSharedPreferences == null) {
+            mSharedPreferences = context.getSharedPreferences(Constant.SP_NAME, Context.MODE_PRIVATE);
+        }
+        return mSharedPreferences.getInt(key, -1);
+    }
+
+    public static void clearShareprefrence(Context context) {
+        if (mSharedPreferences == null) {
+            mSharedPreferences = context.getSharedPreferences(Constant.SP_NAME, Context.MODE_PRIVATE);
+        }
+        mSharedPreferences.edit().clear().apply();
+    }
 }

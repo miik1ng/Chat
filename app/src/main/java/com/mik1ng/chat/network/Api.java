@@ -64,6 +64,14 @@ public class Api {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
+    public static Observable<SearchUserEntity> searchUser(int userID) {
+        return apiService
+                .searchUser(userID)
+                .subscribeOn(Schedulers.io())
+                .compose(NetworkApi.applySchedulers())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
     /**
      * 获取当前用户信息
      * @return

@@ -9,10 +9,11 @@ public class ChatRecordEntity {
     private float imgWidth;             //图片宽度
     private float imgHeight;            //图片高度
     private int second;                 //语音时长 单位：秒
+    private String mediaPath;           //录音路径
     private String locationName;        //定位的地点名称
     private String locationAddress;     //定位的地址
-    private long longitude;             //定位经度
-    private long latitude;              //定位纬度
+    private double longitude;             //定位经度
+    private double latitude;            //定位纬度
     private long timestamp;             //记录时间戳
 
     public int getRecordMode() {
@@ -79,6 +80,14 @@ public class ChatRecordEntity {
         this.second = second;
     }
 
+    public String getMediaPath() {
+        return mediaPath;
+    }
+
+    public void setMediaPath(String mediaPath) {
+        this.mediaPath = mediaPath;
+    }
+
     public String getLocationName() {
         return locationName;
     }
@@ -95,19 +104,19 @@ public class ChatRecordEntity {
         this.locationAddress = locationAddress;
     }
 
-    public long getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(long longitude) {
+    public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
 
-    public long getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(long latitude) {
+    public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
 

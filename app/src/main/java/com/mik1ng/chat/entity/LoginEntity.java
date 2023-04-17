@@ -2,17 +2,7 @@ package com.mik1ng.chat.entity;
 
 public class LoginEntity {
 
-    /**
-     * code : 200
-     * data : {"user":{"id":9,"username":"string","password":"string","sex":null,"avatar":null,"nickname":"string","createTime":"2023-03-12 09:05","updateTime":null},"token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5IiwiZXhwIjoxNjc4Njk4NDc4fQ.KFr7Jrrc40RTkpgA5LYkraHUThAejRkeRrictEnpu9o"}
-     * message : 操作成功
-     */
-
     private int code;
-    /**
-     * user : {"id":9,"username":"string","password":"string","sex":null,"avatar":null,"nickname":"string","createTime":"2023-03-12 09:05","updateTime":null}
-     * token : eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5IiwiZXhwIjoxNjc4Njk4NDc4fQ.KFr7Jrrc40RTkpgA5LYkraHUThAejRkeRrictEnpu9o
-     */
 
     private DataBean data;
     private String message;
@@ -42,16 +32,6 @@ public class LoginEntity {
     }
 
     public static class DataBean {
-        /**
-         * id : 9
-         * username : string
-         * password : string
-         * sex : null
-         * avatar : null
-         * nickname : string
-         * createTime : 2023-03-12 09:05
-         * updateTime : null
-         */
 
         private UserBean user;
         private String token;

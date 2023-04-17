@@ -1,16 +1,18 @@
 package com.mik1ng.chat.ui.main;
 
-import android.os.Bundle;
+import android.os.Handler;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.NavGraph;
 import androidx.navigation.NavGraphNavigator;
@@ -20,22 +22,26 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
+import com.google.android.material.navigation.NavigationBarView;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.mik1ng.chat.R;
 import com.mik1ng.chat.base.BaseActivity;
 import com.mik1ng.chat.databinding.ActivityMainBinding;
-import com.mik1ng.chat.event.CloseChatFragmentEvent;
-import com.mik1ng.chat.event.OpenChatFragmentEvent;
+import com.mik1ng.chat.entity.ChatMessageJsonEntity;
+import com.mik1ng.chat.event.CreateNewChatEvent;
+import com.mik1ng.chat.event.OpenChatEvent;
+import com.mik1ng.chat.event.ReceiveChatMessageEvent;
+import com.mik1ng.chat.event.ReceiveNewFriendMessageEvent;
 import com.mik1ng.chat.event.RefreshFriendsCountEvent;
 import com.mik1ng.chat.event.RefreshMessageCountEvent;
-import com.mik1ng.chat.event.SendChatRecordEvent;
+import com.mik1ng.chat.network.ConnectStatus;
 import com.mik1ng.chat.network.MyWebSocket;
 import com.mik1ng.chat.network.WebSocketCallback;
-import com.mik1ng.chat.ui.chat.ChatFragment;
-import com.mik1ng.chat.ui.main.FriendsFragment;
-import com.mik1ng.chat.ui.main.MessageFragment;
-import com.mik1ng.chat.ui.main.MineFragment;
+import com.mik1ng.chat.util.Constant;
 import com.mik1ng.chat.util.FixFragmentNavigator;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -45,6 +51,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
     private FragmentManager fragmentManager;
 
     private MyWebSocket webSocket;
+
     private final String TAG = "MainActivity------";
 
     @Override
@@ -60,14 +67,15 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
             navController.navigate(item.getItemId());
             return true;
         });
+
         initMessageTab();
         fragmentManager = getSupportFragmentManager();
 
-
-//        webSocket = MyWebSocket.getInstance("wss://demo.piesocket.com/v3/channel_1?api_key=VCXCEuvhGcBDP7XhiJJUDvR1e1D3eiVjgZ9VRiaV&notify_self");
-        webSocket = MyWebSocket.getInstance("ws://123.249.43.238:8080/fit/websocket/aa");
-        webSocket.setWebSocketCallback(callback);
-        webSocket.connect();
+        webSocket = MyWebSocket.getInstance("ws://" + Constant.RELEASE_IP + "/fit/websocket/" + Constant.USER_ID);
+        webSocket.addWebSocketCallback(callback);
+        if (webSocket.getStatus() != ConnectStatus.Open) {
+            webSocket.connect();
+        }
     }
 
     @Override
@@ -83,8 +91,16 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        webSocket.cancel();
+        webSocket.removeWebSocketCallback(callback);
         webSocket.close();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            finish();
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     private WebSocketCallback callback = new WebSocketCallback() {
@@ -95,17 +111,33 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
 
         @Override
         public void onMessage(String text) {
-            Log.i(TAG, "收到：" + text);
+            ChatMessageJsonEntity chatMessageEntity = new Gson().fromJson(text, new TypeToken<ChatMessageJsonEntity>() {
+            }.getType());
+            switch (chatMessageEntity.getType()) {
+                case Constant.MESSAGE_CHAT:
+                    EventBus.getDefault().post(new ReceiveChatMessageEvent(chatMessageEntity.getContent()));
+                    break;
+                case Constant.MESSAGE_NEW_FRIEND:
+                    EventBus.getDefault().post(new ReceiveNewFriendMessageEvent(chatMessageEntity.getContent()));
+                    break;
+            }
+        }
+
+        @Override
+        public void onClosing() {
+
         }
 
         @Override
         public void onClose() {
             Log.i(TAG, webSocket.getStatus().name());
+            webSocket.reConnect();
         }
 
         @Override
         public void onConnectError(Throwable throwable) {
             Log.i(TAG, webSocket.getStatus().name());
+            webSocket.reConnect();
         }
     };
 
@@ -191,24 +223,13 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void openChatFragment(OpenChatFragmentEvent event) {
-        Bundle bundle = event.getBundle();
-        viewBind.fragment.setVisibility(View.VISIBLE);
-        fragmentManager.beginTransaction()
-                .addToBackStack(null)
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                .replace(R.id.fragment, ChatFragment.class, bundle)
-                .commit();
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void closeChatFragment(CloseChatFragmentEvent event) {
-        fragmentManager.popBackStack();
-        viewBind.fragment.setVisibility(View.GONE);
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void sendChatRecordEvent(SendChatRecordEvent event) {
-        webSocket.send(event.getRecord());
+    public void createNewChat(CreateNewChatEvent event) {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                viewBind.navigation.setSelectedItemId(R.id.navigation_message);
+                EventBus.getDefault().post(new OpenChatEvent(event.getUserID(), event.getName(), event.getAvatar()));
+            }
+        }, 100);
     }
 }

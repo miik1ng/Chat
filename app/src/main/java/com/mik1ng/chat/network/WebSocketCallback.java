@@ -7,5 +7,7 @@ public interface WebSocketCallback {
 
     void onClose();
 
+    void onClosing();
+
     void onConnectError(Throwable throwable);
 }
