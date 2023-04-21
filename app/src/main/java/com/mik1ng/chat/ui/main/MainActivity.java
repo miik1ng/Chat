@@ -1,15 +1,12 @@
 package com.mik1ng.chat.ui.main;
 
 import android.os.Handler;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -22,7 +19,6 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
-import com.google.android.material.navigation.NavigationBarView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.mik1ng.chat.R;
@@ -71,7 +67,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
         initMessageTab();
         fragmentManager = getSupportFragmentManager();
 
-        webSocket = MyWebSocket.getInstance("ws://" + Constant.RELEASE_IP + "/fit/websocket/" + Constant.USER_ID);
+        webSocket = MyWebSocket.getInstance(this, "ws://" + Constant.RELEASE_IP + "/fit/websocket/" + Constant.USER_ID);
         webSocket.addWebSocketCallback(callback);
         if (webSocket.getStatus() != ConnectStatus.Open) {
             webSocket.connect();
@@ -103,6 +99,12 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
         return super.onKeyDown(keyCode, event);
     }
 
+    private int friendCount = 0;
+
+    public int getFriendCount() {
+        return friendCount;
+    }
+
     private WebSocketCallback callback = new WebSocketCallback() {
         @Override
         public void onOpen() {
@@ -118,7 +120,9 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
                     EventBus.getDefault().post(new ReceiveChatMessageEvent(chatMessageEntity.getContent()));
                     break;
                 case Constant.MESSAGE_NEW_FRIEND:
-                    EventBus.getDefault().post(new ReceiveNewFriendMessageEvent(chatMessageEntity.getContent()));
+                    friendCount++;
+                    EventBus.getDefault().post(new ReceiveNewFriendMessageEvent(friendCount));
+                    EventBus.getDefault().post(new RefreshFriendsCountEvent(friendCount));
                     break;
             }
         }
@@ -131,13 +135,13 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
         @Override
         public void onClose() {
             Log.i(TAG, webSocket.getStatus().name());
-            webSocket.reConnect();
+            //webSocket.reConnect();
         }
 
         @Override
         public void onConnectError(Throwable throwable) {
             Log.i(TAG, webSocket.getStatus().name());
-            webSocket.reConnect();
+            //webSocket.reConnect();
         }
     };
 
@@ -210,6 +214,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void setFriendsCount(RefreshFriendsCountEvent event) {
+        friendCount = event.getCount();
         if (event.getCount() > 0) {
             if (event.getCount() > 99) {
                 tvFriendsCount.setText("···");

@@ -1,5 +1,10 @@
 package com.mik1ng.chat.network;
 
+import android.content.Context;
+
+import com.mik1ng.chat.R;
+import com.mik1ng.chat.util.ToastUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,19 +22,21 @@ public class MyWebSocket extends WebSocketListener {
     private String wsUrl;
     private WebSocket webSocket;
     private ConnectStatus status;
+    private Context context;
 
     private OkHttpClient client = new OkHttpClient.Builder().build();
 
-    private MyWebSocket(String wsUrl) {
+    private MyWebSocket(Context context, String wsUrl) {
+        this.context = context;
         this.wsUrl = wsUrl;
     }
 
     private static MyWebSocket instance;
 
-    public static MyWebSocket getInstance(String wsUrl) {
+    public static MyWebSocket getInstance(Context context, String wsUrl) {
         if (instance == null) {
             synchronized (MyWebSocket.class) {
-                instance = new MyWebSocket(wsUrl);
+                instance = new MyWebSocket(context, wsUrl);
             }
         }
 
@@ -60,6 +67,9 @@ public class MyWebSocket extends WebSocketListener {
         boolean b = false;
         if (webSocket != null) {
             b = webSocket.send(s);
+        }
+        if (!b || status != ConnectStatus.Open) {
+            ToastUtils.showToast(context, R.string.server_fail);
         }
         return b;
     }

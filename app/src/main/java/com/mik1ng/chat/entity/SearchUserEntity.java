@@ -37,6 +37,7 @@ public class SearchUserEntity {
         private String sex;
         private String avatar;
         private String nickname;
+        private int isFriend;
 
         public int getId() {
             return id;
@@ -76,6 +77,14 @@ public class SearchUserEntity {
 
         public void setNickname(String nickname) {
             this.nickname = nickname;
+        }
+
+        public int getIsFriend() {
+            return isFriend;
+        }
+
+        public void setIsFriend(int isFriend) {
+            this.isFriend = isFriend;
         }
     }
 }

@@ -4,6 +4,8 @@ public class ChatMessageEntity {
     private int type;               //消息类型
 
     private int fromUser;           //消息发送人
+    private String fromUserName;    //发送人昵称
+    private String fromAvatar;      //发送人头像
 
     private String text;            //文本内容
 
@@ -22,30 +24,38 @@ public class ChatMessageEntity {
     public ChatMessageEntity() {
     }
 
-    public ChatMessageEntity(int type, int fromUser, String text) {
+    public ChatMessageEntity(int type, int fromUser, String fromUserName, String fromAvatar, String text) {
         this.type = type;
         this.fromUser = fromUser;
+        this.fromUserName = fromUserName;
+        this.fromAvatar = fromAvatar;
         this.text = text;
     }
 
-    public ChatMessageEntity(int type, int fromUser, String picBase64, float picWidth, float picHeight) {
+    public ChatMessageEntity(int type, int fromUser, String fromUserName, String fromAvatar, String picBase64, float picWidth, float picHeight) {
         this.type = type;
         this.fromUser = fromUser;
+        this.fromUserName = fromUserName;
+        this.fromAvatar = fromAvatar;
         this.picBase64 = picBase64;
         this.picWidth = picWidth;
         this.picHeight = picHeight;
     }
 
-    public ChatMessageEntity(int type, int fromUser, String voiceBase64, int second) {
+    public ChatMessageEntity(int type, int fromUser, String fromUserName, String fromAvatar, String voiceBase64, int second) {
         this.type = type;
         this.fromUser = fromUser;
+        this.fromUserName = fromUserName;
+        this.fromAvatar = fromAvatar;
         this.voiceBase64 = voiceBase64;
         this.second = second;
     }
 
-    public ChatMessageEntity(int type, int fromUser, String locationName, String locationAddress, double locationLat, double locationLog) {
+    public ChatMessageEntity(int type, int fromUser, String fromUserName, String fromAvatar, String locationName, String locationAddress, double locationLat, double locationLog) {
         this.type = type;
         this.fromUser = fromUser;
+        this.fromUserName = fromUserName;
+        this.fromAvatar = fromAvatar;
         this.locationName = locationName;
         this.locationAddress = locationAddress;
         this.locationLat = locationLat;
@@ -66,6 +76,22 @@ public class ChatMessageEntity {
 
     public void setFromUser(int fromUser) {
         this.fromUser = fromUser;
+    }
+
+    public String getFromUserName() {
+        return fromUserName;
+    }
+
+    public void setFromUserName(String fromUserName) {
+        this.fromUserName = fromUserName;
+    }
+
+    public String getFromAvatar() {
+        return fromAvatar;
+    }
+
+    public void setFromAvatar(String fromAvatar) {
+        this.fromAvatar = fromAvatar;
     }
 
     public String getText() {

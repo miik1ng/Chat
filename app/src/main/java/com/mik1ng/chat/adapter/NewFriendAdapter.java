@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.mik1ng.chat.R;
 import com.mik1ng.chat.databinding.ItemNewFriendBinding;
-import com.mik1ng.chat.entity.NewFriendEntity;
+import com.mik1ng.chat.entity.FriendApplyEntity;
 import com.mik1ng.chat.util.Constant;
 
 import java.util.List;
@@ -19,10 +19,10 @@ import java.util.List;
 public class NewFriendAdapter extends RecyclerView.Adapter<ViewHolder<ItemNewFriendBinding>> {
 
     private LayoutInflater layoutInflater;
-    private List<NewFriendEntity> list;
+    private List<FriendApplyEntity.DataBean> list;
     private Context context;
 
-    public NewFriendAdapter(Context context, List<NewFriendEntity> list) {
+    public NewFriendAdapter(Context context, List<FriendApplyEntity.DataBean> list) {
         layoutInflater = LayoutInflater.from(context);
         this.list = list;
         this.context = context;
@@ -37,16 +37,16 @@ public class NewFriendAdapter extends RecyclerView.Adapter<ViewHolder<ItemNewFri
     @Override
     public void onBindViewHolder(@NonNull ViewHolder<ItemNewFriendBinding> holder, int position) {
         Glide.with(context)
-                .load(list.get(position).avatar)
+                .load(list.get(position).getFromAvator())
                 .into(holder.bind.ivAvatar);
 
-        holder.bind.tvName.setText(list.get(position).name);
-        holder.bind.tvRemark.setText(list.get(position).remark);
-        if (list.get(position).state == Constant.FRIEND_STATE_ADD) {
+        holder.bind.tvName.setText(list.get(position).getFromName());
+        holder.bind.tvRemark.setText(list.get(position).getRemark());
+        if (list.get(position).getState() == Constant.FRIEND_STATE_ADD) {
             holder.bind.tvState.setText(context.getString(R.string.new_friend_already));
             holder.bind.tvState.setBackgroundResource(R.drawable.shape_rectangle_eef_100);
             holder.bind.tvState.setTextColor(Color.parseColor("#999999"));
-        } else if (list.get(position).state == Constant.FRIEND_STATE_ALREADY){
+        } else if (list.get(position).getState() == Constant.FRIEND_STATE_ALREADY){
             holder.bind.tvState.setText(context.getString(R.string.new_friend_agree));
             holder.bind.tvState.setBackgroundResource(R.drawable.shape_rectangle_279_100);
             holder.bind.tvState.setTextColor(Color.WHITE);

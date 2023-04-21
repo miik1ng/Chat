@@ -1,6 +1,8 @@
 package com.mik1ng.chat.network;
 
 import com.google.gson.Gson;
+import com.mik1ng.chat.entity.AgreeEntity;
+import com.mik1ng.chat.entity.FriendApplyEntity;
 import com.mik1ng.chat.entity.GetFriendListEntity;
 import com.mik1ng.chat.entity.LoginEntity;
 import com.mik1ng.chat.entity.RegisterEntity;
@@ -91,6 +93,30 @@ public class Api {
     public static Observable<GetFriendListEntity> getFriends() {
         return apiService
                 .getFriends()
+                .subscribeOn(Schedulers.io())
+                .compose(NetworkApi.applySchedulers())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    /**
+     * 获取好友申请列表
+     * @return
+     */
+    public static Observable<FriendApplyEntity> getFriendApplyList() {
+        return apiService
+                .getFriendApplyList()
+                .subscribeOn(Schedulers.io())
+                .compose(NetworkApi.applySchedulers())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    /**
+     * 同意添加好友
+     * @return
+     */
+    public static Observable<AgreeEntity> agree(HashMap map) {
+        return apiService
+                .agree(init(map))
                 .subscribeOn(Schedulers.io())
                 .compose(NetworkApi.applySchedulers())
                 .observeOn(AndroidSchedulers.mainThread());

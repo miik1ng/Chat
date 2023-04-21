@@ -1,5 +1,7 @@
 package com.mik1ng.chat.network;
 
+import com.mik1ng.chat.entity.AgreeEntity;
+import com.mik1ng.chat.entity.FriendApplyEntity;
 import com.mik1ng.chat.entity.GetFriendListEntity;
 import com.mik1ng.chat.entity.LoginEntity;
 import com.mik1ng.chat.entity.RegisterEntity;
@@ -52,6 +54,27 @@ public interface ApiService {
     @GET("fit/user/myInformation")
     Observable<SearchUserEntity> getMyInfo();
 
+    /**
+     * 获取好友列表
+     *
+     * @return
+     */
     @POST("fit/friend/getFriendByUserId")
     Observable<GetFriendListEntity> getFriends();
+
+    /**
+     * 获取好友申请列表
+     *
+     * @return
+     */
+    @GET("fit/friend/getApplyList")
+    Observable<FriendApplyEntity> getFriendApplyList();
+
+    /**
+     * 同意
+     * @param requestBody
+     * @return
+     */
+    @POST("fit/friend/confirm")
+    Observable<AgreeEntity> agree(@Body RequestBody requestBody);
 }

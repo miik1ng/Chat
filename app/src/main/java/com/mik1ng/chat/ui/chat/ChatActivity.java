@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.WindowInsets;
 import android.view.inputmethod.EditorInfo;
 import android.widget.LinearLayout;
@@ -66,8 +67,10 @@ public class ChatActivity extends BaseActivity<ActivityChatBinding> {
     private List<ChatRecordEntity> list = new ArrayList<>();
     private ChatAdapter adapter;
     private String avatar;
+    private String nickName;
     private int id = -1;
     private int messageCount;
+    private float keyBoardHeight = -999999;
 
     private MyWebSocket webSocket;
     private final String TAG = "ChatActivity------";
@@ -139,7 +142,16 @@ public class ChatActivity extends BaseActivity<ActivityChatBinding> {
         viewBind.etInput.setOnEditorActionListener(onEditorActionListener);
         viewBind.ivLocation.setOnClickListener(locationListener);
 
-        webSocket = MyWebSocket.getInstance("ws://" + Constant.RELEASE_IP + "/fit/websocket/" + Constant.USER_ID);
+        viewBind.getRoot().getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                if (keyBoardHeight == -999999) {
+                    keyBoardHeight = DeviceUtils.getKeyboardHeight(ChatActivity.this);
+                }
+            }
+        });
+
+        webSocket = MyWebSocket.getInstance(this, "ws://" + Constant.RELEASE_IP + "/fit/websocket/" + Constant.USER_ID);
         webSocket.addWebSocketCallback(callback);
         if (webSocket.getStatus() != ConnectStatus.Open) {
             webSocket.connect();
@@ -155,10 +167,10 @@ public class ChatActivity extends BaseActivity<ActivityChatBinding> {
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            String name = bundle.getString(Constant.BUNDLE_NAME);
+            nickName = bundle.getString(Constant.BUNDLE_NAME);
             id = bundle.getInt(Constant.BUNDLE_ID);
             Constant.CHAT_USER_ID = id;
-            viewBind.tvName.setText(name);
+            viewBind.tvName.setText(nickName);
             avatar = bundle.getString(Constant.BUNDLE_AVATAR);
             messageCount = bundle.getInt(Constant.BUNDLE_MESSAGE_COUNT);
             updateCount(messageCount);
@@ -208,13 +220,13 @@ public class ChatActivity extends BaseActivity<ActivityChatBinding> {
         @Override
         public void onClose() {
             Log.i(TAG, webSocket.getStatus().name());
-            webSocket.reConnect();
+            //webSocket.reConnect();
         }
 
         @Override
         public void onConnectError(Throwable throwable) {
             Log.i(TAG, webSocket.getStatus().name());
-            webSocket.reConnect();
+            //webSocket.reConnect();
         }
     };
 
@@ -237,7 +249,7 @@ public class ChatActivity extends BaseActivity<ActivityChatBinding> {
             DeviceUtils.hideSoftKeyboard(ChatActivity.this, viewBind.etInput);
             if (viewBind.layoutVoice.getVisibility() == View.GONE) {
                 int height = DeviceUtils.getKeyboardHeight(ChatActivity.this);
-                if (height <= 0) {
+                if (height <= keyBoardHeight) {
                     viewBind.layoutVoice.setVisibility(View.VISIBLE);
                 }
             } else {
@@ -287,7 +299,7 @@ public class ChatActivity extends BaseActivity<ActivityChatBinding> {
 
             if (voiceTime > 1 && !TextUtils.isEmpty(voicePath)) {
                 String base64String = FileUtils.createBase64WithFile(voicePath);
-                ChatMessageEntity chatMessageEntity = new ChatMessageEntity(Constant.CHAT_RECORD_TYPE_VOICE, Constant.USER_ID, base64String, (int) voiceTime);
+                ChatMessageEntity chatMessageEntity = new ChatMessageEntity(Constant.CHAT_RECORD_TYPE_VOICE, Constant.USER_ID, Constant.USER_NAME, Constant.MY_AVATAR, base64String, (int) voiceTime);
                 String contentJson = new Gson().toJson(chatMessageEntity);
                 sendMessage(contentJson);
 
@@ -347,7 +359,7 @@ public class ChatActivity extends BaseActivity<ActivityChatBinding> {
             if (i == EditorInfo.IME_ACTION_SEND) {
                 if (!TextUtils.isEmpty(viewBind.etInput.getText().toString())) {
                     //定义发送的消息内容
-                    ChatMessageEntity chatMessageEntity = new ChatMessageEntity(Constant.CHAT_RECORD_TYPE_TEXT, Constant.USER_ID, viewBind.etInput.getText().toString());
+                    ChatMessageEntity chatMessageEntity = new ChatMessageEntity(Constant.CHAT_RECORD_TYPE_TEXT, Constant.USER_ID, Constant.USER_NAME, Constant.MY_AVATAR, viewBind.etInput.getText().toString());
                     String contentJson = new Gson().toJson(chatMessageEntity);
                     sendMessage(contentJson);
 
@@ -379,12 +391,26 @@ public class ChatActivity extends BaseActivity<ActivityChatBinding> {
                     MediaUtils.playRecording(list.get(position).getMediaPath());
                     break;
                 case Constant.CHAT_RECORD_TYPE_LOCATION:
-                    Intent intent = new Intent(ChatActivity.this, ShowLocationMapActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putDouble(Constant.BUNDLE_LAT, entity.getLatitude());
-                    bundle.putDouble(Constant.BUNDLE_LOG, entity.getLongitude());
-                    intent.putExtras(bundle);
-                    startActivity(intent);
+                    RxPermissions rxPermissions = new RxPermissions(ChatActivity.this);
+                    rxPermissions.request(Manifest.permission.ACCESS_COARSE_LOCATION,
+                                    Manifest.permission.ACCESS_FINE_LOCATION,
+                                    Manifest.permission.ACCESS_WIFI_STATE,
+                                    Manifest.permission.ACCESS_NETWORK_STATE,
+                                    Manifest.permission.CHANGE_WIFI_STATE,
+                                    Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                            .subscribe(new Consumer<Boolean>() {
+                                @Override
+                                public void accept(Boolean aBoolean) throws Throwable {
+                                    if (aBoolean) {
+                                        Intent intent = new Intent(ChatActivity.this, ShowLocationMapActivity.class);
+                                        Bundle bundle = new Bundle();
+                                        bundle.putDouble(Constant.BUNDLE_LAT, entity.getLatitude());
+                                        bundle.putDouble(Constant.BUNDLE_LOG, entity.getLongitude());
+                                        intent.putExtras(bundle);
+                                        startActivity(intent);
+                                    }
+                                }
+                            });
                     break;
             }
         }
@@ -393,7 +419,10 @@ public class ChatActivity extends BaseActivity<ActivityChatBinding> {
     private View.OnApplyWindowInsetsListener applyWindowInsetsListener = new View.OnApplyWindowInsetsListener() {
         @Override
         public WindowInsets onApplyWindowInsets(View view, WindowInsets windowInsets) {
-            int height = DeviceUtils.getKeyboardHeight(ChatActivity.this);
+            int height = 0;
+            if (keyBoardHeight != -999999) {
+                height = (int) (DeviceUtils.getKeyboardHeight(ChatActivity.this) - keyBoardHeight);
+            }
             if (height == 0) {
                 viewBind.etInput.clearFocus();
             }
@@ -576,7 +605,7 @@ public class ChatActivity extends BaseActivity<ActivityChatBinding> {
                                 String base64String = FileUtils.createBase64WithFile(path);
 
                                 //定义发送的消息内容
-                                ChatMessageEntity chatMessageEntity = new ChatMessageEntity(Constant.CHAT_RECORD_TYPE_IMAGE, Constant.USER_ID, base64String, picWidth, picHeight);
+                                ChatMessageEntity chatMessageEntity = new ChatMessageEntity(Constant.CHAT_RECORD_TYPE_IMAGE, Constant.USER_ID, Constant.USER_NAME, Constant.MY_AVATAR, base64String, picWidth, picHeight);
                                 String contentJson = new Gson().toJson(chatMessageEntity);
                                 sendMessage(contentJson);
 
@@ -600,7 +629,7 @@ public class ChatActivity extends BaseActivity<ActivityChatBinding> {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void sendLocation(SendLocationEvent event) {
-        ChatMessageEntity chatMessageEntity = new ChatMessageEntity(Constant.CHAT_RECORD_TYPE_LOCATION, Constant.USER_ID, String.valueOf(event.getResult()[0]), String.valueOf(event.getResult()[1]), (double) event.getResult()[2], (double) event.getResult()[3]);
+        ChatMessageEntity chatMessageEntity = new ChatMessageEntity(Constant.CHAT_RECORD_TYPE_LOCATION, Constant.USER_ID, Constant.USER_NAME, Constant.MY_AVATAR, String.valueOf(event.getResult()[0]), String.valueOf(event.getResult()[1]), (double) event.getResult()[2], (double) event.getResult()[3]);
         String contentJson = new Gson().toJson(chatMessageEntity);
         sendMessage(contentJson);
 

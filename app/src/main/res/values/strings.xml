@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Chat</string>
 
+    <string name="server_fail">服务器断开连接</string>
+
     <!--navigation-->
     <string name="navigation_message">聊天</string>
     <string name="navigation_friends">好友</string>
@@ -77,6 +79,7 @@
     <string name="friend_add">添加好友</string>
     <string name="friend_agree">同意</string>
     <string name="friend_send_message">发消息</string>
+    <string name="friend_toast_apply">发送好友请求</string>
     <!--fragment_mine-->
     <string name="mine_setting">设置</string>
     <string name="mine_quit">退出登录</string>
