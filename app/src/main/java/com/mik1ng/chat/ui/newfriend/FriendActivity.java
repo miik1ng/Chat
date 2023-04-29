@@ -129,7 +129,8 @@ public class FriendActivity extends BaseActivity<ActivityFriendBinding> {
         @Override
         public void onClick(View view) {
             finish();
-            EventBus.getDefault().post(new CreateNewChatEvent(Constant.USER_ID, Constant.USER_NAME, Constant.MY_AVATAR));
+//            EventBus.getDefault().post(new CreateNewChatEvent(Constant.USER_ID, Constant.USER_NAME, Constant.MY_AVATAR));
+            EventBus.getDefault().post(new CreateNewChatEvent(id, name, avatar));
         }
     };
 
